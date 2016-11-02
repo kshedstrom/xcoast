@@ -1,0 +1,833 @@
+'\" t
+.\" the previous line makes man call tbl
+.TH XCOAST 1 "Release 3.0, pl0"
+.SH NAME
+xcoast \- interactive coastline drawing for gridpak
+.SH SYNOPSIS
+.B xcoast
+[\fIoptions\fP]
+[\fIfile\fP]
+.SH DESCRIPTION
+.I Xcoast 
+is a menu-driven tool that allows the user to view coastlines from a
+data file and to draw lines over them.  These lines may be saved to
+a file and used as the grid boundary in \fIgridpak\fP.  The look and
+feel (and code) is derived from \fIxfig\fP version 2.1.x.
+.B It runs under X version 11
+.B release 4 or higher
+and requires a two- or three-button mouse.
+.I file
+specifies the name of a file to be edited. The description of
+boundaries and the projection in the file will be read at the start of
+\fIxcoast\fP.
+.PP
+When using a two-button mouse
+use the <Meta> key and the right button at the same time to effect
+the action of the middle button (not tested).
+.PP
+Note: the coastline file format has changed back to the one used by
+\fIxcoast\fP version 1.0.  We once again have a higher resolution
+global coastline.
+.SH OPTIONS
+.TP
+.B \-bg \fIcolor\fP
+Use \fIcolor\fP as the background color for the canvas and buttons.
+.TP
+\fB-bol[d]\fP \fIfont\fP
+Cause the font used for displaying confirmation messages to be
+\fIfont\fP (default = 8x13bold).
+.TP
+\fB-bu[tton]\fP \fIfont\fP
+Cause the font used for most buttons to be \fIfont\fP (default = 6x13).
+.TP
+\fB-data\fP \fIfile\fP
+Cause the file read for the coastline data to be \fIfile\fP.
+.TP
+\fB-de\fP
+Turn on debugging mode (for running \fIxcoast\fP under dbx).
+.TP
+.B \-fg \fIcolor\fP
+Use \fIcolor\fP as the foreground color and default color for objects.
+.TP
+\fB-geom[etry]\fP \fIWxH+X+Y\fP
+Specifies the geometry for \fIxcoast\fP application.
+.TP
+\fB-iconG[eometry]\fP \fI+X+Y\fP
+Specifies the position for the icon.
+.TP
+.B \-internalBW \fIwidth\fP
+Use lines of width \fIwidth\fP between all buttons and panels
+(default = 1).
+.TP
+\fB-inv\fP
+Use inverse video (white on black).
+.TP
+.B \-le[ft]
+Change the position of the side panel window to the left of the
+canvas window.
+.TP
+.B \-mo[nochrome]
+Use black and white only.
+.TP
+\fB-nor[mal]\fP \fIfont\fP
+Cause the font used for the message panel and ruler numbers to be
+\fIfont\fP.  This font is also used on the canvas when the selected
+font is not available in an X11 font (default = fixed).
+.TP
+.B \-not[rack]
+Turn off cursor (mouse) tracking arrows.
+.TP
+\fB-ph\fP \fIunits\fP
+Make \fIxcoast\fP come up \fIunits\fP high (where units are cm).
+.TP
+\fB-pw\fP \fIunits\fP
+Make \fIxcoast\fP come up \fIunits\fP wide (where units are cm).
+.TP
+.B \-ri[ght]
+Change the position of the side panel window to the right of the
+canvas window (default: left).
+.TP
+.B \-sc[alablefonts]
+Allows use of the X11R5 scalable fonts.
+.TP
+.B \-nosc[alablefonts]
+Disables use of the X11R5 scalable fonts.  You might want to use
+this for debugging.
+.TP
+.B \-sh[owallbuttons]\fP
+Show all the \fIxcoast\fP indicator buttons instead of only those
+relevant to the current drawing mode.  Normally, the buttons \fIline
+width\fP, \fIgrid mode\fP, etc. are only visible when they are relevant
+to the current drawing mode.  The \fB-showallbuttons\fP option makes
+all of the indicator buttons visible at all times.  This takes up more
+screen real estate, but allows the user to see all settable
+parameters.
+.TP
+.B \-tr[ack]
+Turn on cursor (mouse) tracking arrows (default).
+.SH "COASTLINE DATA FILE"
+In order to draw the coastlines, a data file must be provided.  A
+number of ways to specify the coastline file are available.  The
+command line option \fB-data\fI file\fR takes precedence over any
+others.  Second is the environment variable \fIXCOASTDATA\fP.
+Finally, if no other data file has been specified, the file
+\fIcoastdb.dat\fP in the current directory is used.
+.SH "GRAPHICAL OBJECTS"
+The objects in \fIxcoast\fP are divided into \fBprimitive objects,
+coastline objects\fP, and \fBgrid objects\fP.  Coastline objects are
+drawn from a coastline database once a map projection has been chosen.
+Grid objects show lines of constant longitude and latitude.  The
+primitive objects are \fIPOLYLINE\fP and \fISPLINE\fP.  The points
+within a primitive object are stored as a linked-list and are written
+to disk in the order in which they are drawn.  They should be drawn in
+a counter-clockwise direction if they are going to be read by the
+\fIgrid\fP program.  However, the objects themselves will not be
+written in any reliable order and must be put into the correct order
+with an editor.
+.PP
+A primitive can have its points be moved, deleted or added, or the
+whole object can be deleted.  In a \fBsave\fP operation, the
+primitive objects are saved as are the map projection parameters.
+After a restore, the coastline and grid objects must be rebuilt from
+the map projection information.
+.SH "DISPLAY WINDOWS"
+Ten regions comprise the display area of \fIxcoast\fP: the command
+region, top ruler, side ruler, drawing mode region, editing mode
+region, filename region, message region, mouse function indicator
+region and canvas region, and indicator region with buttons to set and
+show current line thickness, line style, color, and several other
+settings.  (The mouse function indicator region was inspired by the UPS
+debugger from the University of Kent.) The drawing and editing mode
+regions may be placed (together) to the left or right of the the canvas
+window (default: left).
+.SH "COMMAND PANEL FUNCTIONS"
+.TP
+.I Quit
+Exit from \fIxcoast\fP, discarding the figure. If the figure has been
+modified and not saved, the user will be asked to
+confirm the action, by clicking mouse button 1 on a confirm/cancel
+popup menu.
+.TP
+.I Delete ALL
+Delete all objects from the canvas window (may be undone).
+.TP
+.I Undo
+Undo the last object creation, deletion or modification.
+.TP
+.I Redraw
+Redraw the canvas.
+.TP
+.I Map Proj
+Pressing mouse button 1 or \fI<Meta>p\fP pops up a menu with several
+projection parameter widgets:
+.PP
+.po +.5i
+.nr LL 6i
+.TP
+.I Projection
+This is a SimpleMenu widget which offers you a choice of conformal
+projections - Mercator, Conformal Conic, and Stereographic.
+.TP
+.I Latitude
+This is an AsciiTextWidget containing the central (tangent)
+latitude of the map projection.
+.TP
+.I Longitude
+This is an AsciiTextWidget containing the central longitude of the
+map projection.
+.TP
+.I Rotation
+This is an AsciiTextWidget containing the rotation angle of the map
+projection.  For the Conic projection, this is the second tangent
+latitude instead.
+.IP
+.po -.5i
+.I Lower left latitude
+.br
+.I Lower left longitude
+.br
+.I Upper right latitude
+.br
+.I Upper right longitude
+.br
+.po +.5i
+These four AsciiTextWidgets define the bounding rectangle of the
+region to be drawn.  This region may not have the same aspect ratio
+as the display canvas, in which case the bounding rectangle is
+expanded to fill the canvas.  Note that plots made with NCAR
+graphics using the same bounds will not expand in this way.
+.TP
+.I Cancel
+Pressing this button or \fI<Meta>c\fP will pop down the \fIProjection\fP
+panel without making any changes to the map projection or domain
+bounds.
+.TP
+.I Set
+Pressing this button or \fI<Meta>s\fP will initialize the map
+projection information.  It will also tell it to start drawing the
+coastlines using that map projection.
+.PP
+.po -.5i
+.nr LL 6.5i
+.TP
+.I File
+Pressing mouse button 3 on this button invokes \fISave\fP function
+without popping up the file panel.
+.PP
+When you ask \fIxcoast\fP to do a save operation, four files are
+created.  These are the \fIxfig\fP-like file, the file for use by
+\fIgrid\fP, the projection file which is included by \fItolat\fP, and a
+file used by the SEOM grid tools.
+When you provide the filename these files will be:
+.TP
+.I filename
+This is the private \fIxcoast\fP file that is used when you read in
+a file.  It contains the projection information and the splines and
+polylines that you have drawn.  The coastline information is not
+saved and will have to be redrawn by going to the
+\fIProjection\fP popup menu and clicking on \fIset\fP.
+.TP
+\fIfilename\fP.M
+This is a file containing the coastline information \fBalmost\fP in the
+form expected by \fIgrid\fP.  It must be edited to make sure that
+the corners meet and that the line segments are in the correct
+order.  The line segments are stored as linked lists and are written
+to this file in a quasi-random order.  Points within each linked
+list are in the order drawn.
+.TP
+\fIfilename\fP.proj
+This is a file with the projection information needed by \fItolat\fP
+and by \fIplothist\fP (if you ask for coastline drawing).  It
+should be renamed to proj.h before you do a \fImake tolat\fP.
+.TP
+\fIfilename\fP.uv
+This is a file containing the projection information and the grid
+boundary information in the map projection's \fIu,v\fP coordinate
+system.  The program \fIto_latlon\fP can be used to convert these
+values to latitude, longitude.
+.PP
+Mouse button 1 or \fI<Meta>f\fP pops up a panel which contains
+several file-related functions:
+.PP
+.po +.5i
+.nr LL 6i
+.TP
+.I Current Filename
+This is read-only AsciiTextWidget which contains the filename that
+will be used
+to write output to a file \fIif there is no name specified in\fP the
+\fIFilename\fP panel.
+.TP
+.I Filename
+This is an editable AsciiTextWidget which contains the filename
+selected
+either by clicking on a filename from the \fIAlternatives\fP list or
+by typing a name in directly.
+Pressing return in the Filename window will \fILoad\fP the file and
+copy
+the name to the \fICurrent Filename\fP widget.
+.TP
+.I (File) Alternatives
+Pressing mouse button 1 on a filename in the file alternatives
+window will select that file by copying the filename into
+\fIFilename\fP window.  Pressing return in this window will \fILoad\fP
+the file specified in the
+\fIFilename\fP window (if any) or the \fICurrent Filename\fP widget.
+.TP
+.I Filename Mask
+A wildcard mask may be typed into this editable AsciiTextWidget to
+restrict the search of filenames to a subset ala the \fIls\fP command.
+Pressing return in this window will automatically rescan the current
+directory.  This string may be set by setting the X toolkit resource
+\fB*file_panel*mask*string\fP.
+.TP
+.I Current Directory
+This is an editable AsciiTextWidget which shows the current directory.
+It may be modified by the user to manually set a directory name.  When
+return is pressed in this window the directory specified is scanned for
+files matching the \fIFilenamemask\fP, if any.
+
+The ~ (tilde) character may be used to specify a user's home
+directory, ala unix shell tilde expansion.
+.TP
+.I (Directory) Alternatives
+Pressing mouse button 1 on a directory name in the directory
+alternatives list will do a "change directory" to that directory.
+
+Pressing mouse button 3 in either the file or \fIDirectory
+Alternatives\fP window will do a "change directory" to the parent
+directory.
+.TP
+.I Home
+Pressing this button will change the directory to the \f3$HOME\f1
+directory of the user.
+.TP
+.I Rescan
+Pressing this button or \fI<Meta>r\fP will rescan the
+current directory.
+.TP
+.I Cancel
+Pressing this button or \fI<Meta>c\fP will pop down the \fIFile\fP
+panel without making any changes to the directory or file name.
+.TP
+.I Save
+Pressing this button or \fI<Meta>s\fP will save the current contents of
+the canvas in the file specified in the \fIFilename\fP window \fIif
+any\fP, or the name specified in the \fICurrent Filename\fP if the
+former is empty.  If the file already exists a confirmation popup menu
+will appear asking the user to confirm or cancel the save.  If there is
+a filename in the \fIFilename\fP window it is copied to the \fICurrent
+Filename\fP window.
+.TP
+.I Load
+Pressing this button or \fI<Meta>l\fP will clear the canvas of any
+current figure and read the figure from the filename specified in the
+\fIFilename\fP menu item \fIif any\fP, or the name specified in the
+\fICurrent Filename\fP if the former is empty.  If there is a figure
+currently on the canvas and any modifications have been made to it and
+not saved, a popup query window will first appear asking if the user
+wishes to discard the current figure or cancel the \fILoad\fP
+operation.
+This window can be popped down by clicking the mouse button on the
+\fIDismiss\fP button.
+.IP
+\fIxcoast\fP is able to read files created by version 1.0 of
+\fIxcoast\fP, but your lines no longer overlay the coastlines.
+This may or may not be fixable.
+.TP
+.I Merge Read
+Pressing this button or \fI<Meta>r\fP will read the figure from the
+filename specified in the \fIFilename\fP window \fIif any\fP, or the
+name specified in the \fICurrent Filename\fP if the former is empty,
+and merge it with the figure already shown on the canvas.
+
+See \fILoad\fP above for a description of the popup message window.
+.PP
+.po -.5i
+.nr LL 6.5i
+.SH "INDICATOR PANEL COMMAND DESCRIPTIONS"
+.PP
+The indicator panel contains buttons to set certain drawing parameters
+such as line thickness, canvas grid, color, etc.  All of the buttons
+use the same mouse buttons for setting values.  Pressing mouse button 1
+on the indicator will pop up a panel in which either a value may be
+typed (e.g. for a line thickness) or the mouse may be clicked on one of
+several buttons (e.g. for color).  For those that expect a value,
+pressing return in the value part of the window will set the new value
+and pop down the menu.
+.PP
+Pressing mouse button 2 on an indicator will decrement the value (e.g.
+for line thickness) or cycle through the options in one direction (e.g.
+line styles), while pressing mouse button 3 will increment the value or
+cycle through the options in the other direction.
+.TP
+.I ZOOM SCALE
+The canvas zoom scale may be set/increased/decreased with this button.
+The zoom scale is displayed within the zoom button. The ruler and grid
+are scaled, too.  Pressing mouse button 2 will decrease the zoom factor
+by 1.0 unless it is less than 1.0 already in which case it will reduce
+to the nearest 0.25.  Pressing mouse button 3 will increase the zoom
+factor by 1.0 unless it is less than 1.0 in which case it will increase
+it to the nearest 0.25.  Pressing the control key and mouse button 3
+together will set the zoom scale to 1.
+.sp
+The figure may also be zoomed by defining a zoom rectangle by pressing
+the control key and mouse button 1 together.  This will define one
+corner of the zoom rectangle.  Move the mouse and click mouse button 1
+again to define the opposite corner of the zoom rectangle.
+.TP
+.I GRID MODE
+With this button the user selects whether or not to draw the
+latitude/longitude lines.
+.TP
+.I GRID SCALE
+Select the density of latitude/longitude lines to draw if \fIGRID
+MODE\fP is selected.  An integer number of lines are drawn for each
+ten degree square, constraining the allowable values.  NOTE: the
+number in the pop-up window is the integer number of grid lines per
+ten degrees, not the grid line spacing.
+.TP
+.I COLOR
+The user may select one of eight predefined colors to draw with, or
+select that the \fIdefault\fP (-fg) color is to be used.  The eight
+colors are black, blue, green, cyan, red, magenta, yellow and white.
+On monochrome screens the objects are created with the selected color,
+but black is used to draw the objects on the canvas.
+.TP
+.I LINE WIDTH
+The width of lines may be selected with this button.  Zero width lines
+may be drawn but are not useful.  Coastlines are drawn with a width
+of one, while the default width of splines and polylines is two.
+.TP
+.I LINE STYLE
+The choices for line style are solid, dashed and dotted.  Once created,
+a dashed or dotted line may be updated to change the length of dashes or
+the spacing of dots respectively.  The dash length and dot gap can be
+changed from the default using the popup menu.
+.SH "DRAWING AND EDITING MODE PANELS"
+Icons in the drawing and editing mode panel windows represent object
+manipulation functions, modes and other drawing or modification aids.
+Manipulation functions are selected by positioning the cursor over the
+icon representing the desired drawing/editing function and clicking
+mouse button 1.  The selected icon is highlighted, and a message
+describing its function appears in the message window.  The hilighting
+remains on until another function is selected.
+.SH "DRAWING MODE PANEL COMMAND DESCRIPTIONS"
+.PP
+The drawing mode panel contains buttons used to create the various
+\fIxcoast\fP objects.  Once the drawing mode is selected, the object is
+created by moving the mouse to the point on the canvas where the object
+is to be placed and pressing and releasing mouse button 1.  After that
+the mouse is moved to the second point and mouse button 1 is again
+pressed.  Mouse button 1 is pressed for each successive point, and
+mouse button 2 must be pressed to finish the object.
+.PP
+At any time mouse button 3 may be pressed to cancel the
+creation of the object.
+.TP
+.I POLYLINE
+Create polylines (line segments connecting a sequence of points).
+Enter points by clicking mouse button 1 at the desired positions on the
+canvas window.  Click mouse button 2 to finish.  To create a single
+point using the \fIPOLYLINE\fP button, press and release mouse button
+2.
+.TP
+.I INTERPOLATED SPLINE
+Create (cubic spline) spline objects.  Enter control vectors in the
+same way as for creation of a \fIPOLYLINE\fP object.  At least three
+points (two control vectors) must be entered.  The spline will pass
+through the entered points.
+
+.SH "EDITING MODE PANEL COMMAND DESCRIPTIONS"
+When a button in the editing mode panel is pressed, any objects that
+may be affected by that editing operation will show their corner
+markers.  Coastlines cannot be edited and do not have markers.
+
+.SH "SELECTING OBJECTS"
+When multiple objects have points in common, e.g. two polylines that
+touch one another, only one object can be selected by clicking on that
+point. To select other objects, hold down the shift key while pressing
+mouse button 1: the markers of one object will be temporarily
+highlighted.  By repeatedly clicking mouse button 1 while holding down
+the shift key, it is possible to cycle through all candidates for
+selection at that point. To perform the selected action, e.g.  deleting
+one box, click on the point without holding down the shift key.  The
+operation will be performed on the highlighted object.
+
+\fBNote:\fP
+If the mouse is not clicked near enough to an object marker or for
+whatever reason \fIxcoast\fP cannot "find" the object the user is trying
+to select, a black square will temporarily appear above the mouse
+cursor.
+.TP
+.I MOVE POINT
+Modify the position of a point of \fIPOLYLINE\fP and \fISPLINE\fP
+objects.  For unrestrained movement, click mouse button 1 over the
+desired point, reposition the point, and click the \fIleft\fP button
+again.  For horizontally or vertically constrained move, click mouse
+button 2 on the desired point and move either horizontally or
+vertically.  Notice that once you choose the direction (horizontal or
+vertical), movement is constrained in that direction.  If, after moving
+the mouse initially, it is moved in the other direction a greater
+distance than the current position of the mouse relative to the
+starting point, then that will be the new constraint direction.  In
+otherwords if you first move the mouse \fIhorizontally\fP one cm (say)
+then move it \fIvertically\fP 1.3 cm, the direction will switch to
+\fIvertical\fP until any \fIhorizontal\fP motion exceeds 1.3 cm.  When
+the object is positioned where desired, click mouse button 1 to place
+it if that button was used to start the move (unconstrained), or mouse
+button 2 (constrained) if that button was used.
+.TP
+.I ADD POINTS
+Add points to \fIPOLYLINE\fP and \fISPLINE\fP objects.
+.TP
+.I DELETE POINTS
+Delete points from \fIPOLYLINE\fP and \fISPLINE\fP objects.
+.TP
+.I DELETE
+Click mouse button 1 on an object to delete the object.  Delete a
+\fIregion\fP of the canvas by clicking mouse button 2 and dragging the
+mouse to define an area of objects to delete.
+.TP
+.I UPDATE
+By pressing mouse button 1 on an object, the current settings for the
+indicator buttons (line width, line style, color, etc.) which have been
+selected for update are copied into that object.  When \fIxcoast\fP is
+started, all indicator buttons which are components of objects are
+selected for update.  To unselect an indicator, click on the update
+button and click mouse button 1 on the small button in the upper-right
+corner of the indicator.  When that indicator is selected the
+foreground color (default black) shows.  When it is unselected the
+background color (default white) shows.
+.sp
+If mouse button 2 is clicked on an object, the settings in the object
+that are selected by the indicator buttons are copied into those
+indicator button settings.  Thus, one may copy selected attributes of
+one object to another.
+.TP
+.I SPLINE <-> POLYLINE
+Turn a \fIPOLYLINE\fP into an \fIINTERPOLATED SPLINE\fP object or vice
+versa.
+.SH "PANNING"
+The figure may be panned by clicking mouse button 1, 2 or 3 in the
+rulers.  Clicking mouse button 1 in the top ruler will pan the image to
+the left by 2 cm, adjusted for zoom factor. Clicking mouse button 3 in
+the top ruler will pan the image right by the same amount.  By pressing
+and \fIholding\fP mouse button 2 the user may drag the ruler by the
+amount desired, thus panning with more control.
+.PP
+The figure is panned up and down in the same way by clicking the mouse
+in the ruler on the right of the canvas.  Also, the figure can be
+returned to its origin by clicking mouse button 1 in the home box.
+.PP
+The arrow keys may also be used to pan the image and the home key to
+return the figure to the origin.  Also, pressing the Control Key and
+mouse button 2 will pan the figure to the origin.
+
+.SH X DEFAULTS
+The overall widget name(Class) is xcoast(XCoast).  These
+resources correspond to the command line arguments:
+.nf
+.sp
+.TS
+L 1 L 1 L 1 L 1 L.
+Name    Class   Type    Default Command-line equivalent
+_
+justify Justify         boolean false   -left (false) and -right (true)
+pwidth  Width   float   24  -pwidth
+pheight Height  float   24  -pheight
+trackCursor     Track   boolean on      -track and -notrack
+reverseVideo    ReverseVideo    boolean off     -inverse
+debug   Debug   boolean off     -debug
+normalFont      NormalFont      string  fixed   -normal
+boldFont        ButtonFont      string  8x13bold        -bold
+showallbuttons  ShowAllButtons  boolean false   -showallbuttons
+internalborderwidth     InternalBorderWidth     integer 1 -internalBW
+scalablefonts   ScalableFonts   boolean false   -scalablefonts
+monochrome      Monochrome      boolean false   -monochrome
+flushleft       FlushLeft       boolean false   -flushleft
+color0  Color0  pixel   black
+color1  Color1  pixel   blue
+color2  Color2  pixel   green
+color3  Color3  pixel   cyan
+color4  Color4  pixel   red
+color5  Color5  pixel   magenta
+color6  Color6  pixel   yellow
+color7  Color7  pixel   white
+_
+.TE
+The following are the default keyboard accelerators as distributed
+in the XCoast.ad app-defaults file:
+.TS
+l l.
+Keys (Context)  Function
+(Main xcoast panels)
+<Meta>q Quit xcoast
+<Meta>d Delete all objects from canvas
+<Meta>u Undo
+<Meta>r Redraw
+<Meta>f popup File menu
+<Meta>p popup Projection menu
+<Meta>l (re)Load figure from current file
+<Meta>s Save figure to current file
+
+(Popup file panel)
+<Meta>r Rescan current directory
+<Meta>c Cancel
+<Meta>l Load figure
+<Meta>s Save figure
+<Meta>m Merge read into current figure
+
+.TE
+.fi
+.SH WIDGET TREE
+Below is the widget structure of \fIxcoast\fP.
+The widget class name is given first, followed by the widget
+instance name.
+.nf
+.ta .5i 1i 1.5i 2i 2.5i 3i 3.5i 4i 4.5i
+
+XCoast  xcoast
+        Form  form
+                Form  commands
+                        Command  quit
+                        Command  delete_all
+                        Command  undo
+                        Command  redraw
+                        Command  file
+                        Command  mapproj
+                Form msg_form
+                        Label  file_name
+                        Text  message
+                Box  mode_panel
+                        Label  label
+                        Command  button (one for each of the 2 drawing mode buttons)
+                        Label  label
+                        Command  button (one for each of the 6 editing mode buttons)
+                Label  topruler
+                Label  canvas
+                Label  unitbox
+                Label  sideruler
+                Viewport ind_viewport
+                        Core  clip
+                        Scrollbar  horizontal
+                        Box  ind_panel
+                                Form  button_form (one for each of the 5 indicator buttons)
+                                        Command  button
+                                        Toggle  update (only those indicators that affect creation
+                                                        of objects have update toggles)
+
+        TransientShell  xfig_file_menu
+                Form  file_panel
+                        Label  file_status
+                        Label  num_objects
+                        Label  cur_file_label
+                        Text  cur_file_name
+                        Label  file_label
+                        Text  file_name
+                        Label file_alt_label
+                        Viewport  vport
+                                Core  clip
+                                Scrollbar  vertical
+                                List  file_list_panel
+                        Label  mask_label
+                        Text  mask
+                        Label  dir_label
+                        Text  dir_name
+                        Label  dir_alt_label
+                        Command home
+                        Viewport  dirvport
+                                Core  clip
+                                Scrollbar  vertical
+                                List  dir_list_panel
+                        Command  rescan
+                        Command  cancel
+                        Command  save
+                        Command  load
+                        Command  merge
+
+        TransientShell  xfig_file_msg
+                Form  file_msg_panel
+                        Text  file_msg_win
+                        Command  dismiss
+
+        TransientShell  query_popup
+                Form  query_form
+                        Label  message
+                        Command  yes
+                        Command  no
+                        Command  cancel
+
+        TransientShell  xfig_set_proj_panel
+                Form  form
+                        Label        Map Projections/Limits
+                        Label  Projection  =
+                        MenuButton  Mercator
+                                SimpleMenu  menu
+                                        SmeBSB  Mercator
+                                        SmeBSB  Conformal Conic
+                                        SmeBSB  Stereographic
+                        Label  Latitude =
+                        Text   latitude
+                        Label  Longitude =
+                        Text   longitude
+                        Label  Rotation =
+                        Text   rotation
+                        Label  Lower left Latitude =
+                        Text   minmax
+                        Label  Lower left Longitude =
+                        Text   minmax
+                        Label  Upper right Latitude =
+                        Text   minmax
+                        Label  Upper right Longitude =
+                        Text   minmax
+                        Command  cancel
+                        Command  set
+.fi
+.SH BUGS and RESTRICTIONS
+Please send bug reports, fixes, new features etc. to:
+.br
+kate@ahab.rutgers.edu
+(Kate Hedstrom)
+.PP
+The order in which the primitive objects are written to disk should
+be the same as the order in which they were created.
+.PP
+Not all operations employ smart redrawing of objects which are altered
+as a by product of the operation.  You may need to use \fIRedraw\fP in
+these cases.
+.PP
+Must compile \fIxcoast\fP with \fB-DOPENWIN\fP in order to make
+\fIxcoast\fP handle OpenWindows scalable fonts correctly.
+.PP
+Some servers do not allow bitmaps/pixmaps taller than the screen height
+or wider than the screen width.  That is why there is a limit on the
+width of the top ruler and height of the side ruler.  If you need
+wider/taller rulers AND your server allows bigger pixmaps, you may
+define MAX_TOPRULER_WD and/or MAX_SIDERULER_HT in your Imakefile in the
+DEFINES line.  For example, to have a maximum top ruler width of 1160
+pixels, add -DMAX_TOPRULER_WD=1160 to your DEFINES line in the
+Imakefile.
+.PP
+There is a bug in OpenWindows 2.0 which relates to pixmaps in widgets.
+You must compile \fIxcoast\fP with the \fB-DOPENWIN_BUG\fP option for
+this problem.
+.PP
+If the image is panned or the \fIxcoast\fP window iconified and
+de-iconified during the middle of an operation (e.g. while drawing a
+line), the picture will be distorted.  This can be corrected using
+\fIRedraw\fP after the operation is complete.
+.SH "SEE ALSO"
+Wilkin and Hedstrom
+.I "Unfinished gridpak manual"
+.SH ACKNOWLEDGEMENT
+.SH COPYRIGHT
+Original Copyright (c) 1985 by Supoj Sutanthavibul
+.PP
+Permission to use, copy, modify, distribute, and sell this software
+and its
+documentation for any purpose is hereby granted without fee,
+provided that
+the above copyright notice appear in all copies and that both that
+copyright notice and this permission notice appear in supporting
+documentation. No representations are made about suitability of this
+software for any purpose.  It is provided "as is" without express or
+implied warranty.
+.SH AUTHORS
+\fIxcoast\fP is based on \fIxfig\fP 2.1, to which
+many people have contributed.  Here is a list of the
+people who have contributed the most (in chronological order):
+.sp
+Original author:
+.br
+Supoj Sutanthavibul, University of Texas at Austin
+.sp
+Original X11 port by:
+.br
+Ken Yap, Rochester
+.sp
+Variable window sizes, cleanup of X11 port, right hand side panel:
+.br
+Dana Chee, Bellcore
+.sp
+Cleanup of color port to X11 by:
+.br
+John T. Kohl, MIT
+.sp
+\fBVersion 2.0:\fP
+.br
+Multiple line thicknesses,
+bottom panel, line style/thickness modification of objects by:
+.br
+Brian V. Smith, Lawrence Berkeley Laboratory
+.br
+(standard disclaimer applies)
+.br
+(bvsmith@lbl.gov)
+.sp
+Popup change-object menu by:
+.br
+Jon Tombs
+.br
+Frank Schmuck
+.sp
+Zooming and panning functions, shift key select mechanism by:
+.br
+Dieter Pellkofer
+.br
+Henning Spruth
+.sp
+\fBVersion 2.1:\fP
+.br
+Indicator panel, file menu popup, print menu popup, panning with
+rulers, mouse function window, dashed/dotted splines on canvas, update
+button, constrained copy/move, context sensitive corner markers,
+smarter redraw, cancel object creation, save of figure on crash by:
+.sp
+Paul King (king@cs.uq.oz.au)
+.br
+with help from:
+.br
+Brian V. Smith (bvsmith@lbl.gov) and Micah Beck (beck@cs.cornell.edu)
+.sp
+Color implementation and pan/zoom with ctrl key/mouse by:
+.br
+Henning Spruth
+.sp
+Directory Browser based on XDir by:
+.br
+Win Treese, Digital Equipment Corporation
+.sp
+Many bug fixes/cleanups etc. by a host of faithful users
+.br
+See the xfig CHANGES file for all the credits.
+.sp
+\fBxcoast 1.0:\fP
+.br
+xfig 2.0 turned into xcoast by:
+.br
+Kate Hedstrom
+.br
+and
+.br
+Eddie Parker
+.sp
+\fBxcoast 2.0:\fP
+.br
+Updated to xfig 2.1.7 and incorporated some of the GIS described in
+Lukatela and Russell.  This includes the coastline file, checking for
+coastline chunks being off screen, and the latitude/longitude grid.
+.sp
+\fBxcoast 3.0:\fP
+.br
+I went back to the original style of coastline file since it is easier
+to produce than the version 2 style.  Also, the version 2 style didn't
+seem to be a big win with my ascii implimentation of it.
+.sp
+I also made the Mercator projection more general.  It no longer
+requires that you use an equatorial central latitude with zero rotation
+angle.
+.br
+Kate Hedstrom
+.br
+(kate@ahab.rutgers.edu)

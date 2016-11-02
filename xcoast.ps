@@ -1,0 +1,2042 @@
+%!PS
+%%Version: 3.15
+%%DocumentFonts: (atend)
+%%Pages: (atend)
+%%EndComments
+%ident	"@(#)lp:filter/postscript/postscript/dpost.ps	1.1"
+%
+% Version 3.16 prologue for troff files.
+%
+
+/#copies 1 store
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/VR /Varitimes#Roman def
+/VI /Varitimes#Italic def
+/VB /Varitimes#Bold def
+/VX /Varitimes#BoldItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation neg rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	/Symbol /S Sdefs cf
+	/Times-Roman /S1 S1defs cf
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto show} repeat}
+	{neg moveto {2 index stringwidth pop sub exch div 0 32 4 -1 roll widthshow} repeat}
+	{neg moveto {spacewidth sub 0.0 32 4 -1 roll widthshow} repeat}
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get bind def} bind def
+
+/w {neg moveto show} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def findfont exch
+	dup /ptsize exch def scaling div dup /size exch def scalefont setfont
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put} {pop pop} ifelse} forall
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+
+/Sdefs [
+	/bracketlefttp		[220 500]
+	/bracketleftbt		[220 500]
+	/bracketrighttp		[-70 380]
+	/bracketrightbt		[-70 380]
+	/braceleftbt		[220 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	% NeWSprint's \(br is too low, compensate
+	statusdict /product get (NeWS Server) eq {
+		/radicalex		[-50 100 500 0]
+		/parenleftex		[-20 100 0 0]
+
+	} {
+		/radicalex		[-50 0 500 0]
+		/parenleftex		[-20 -170 0 0]
+	} ifelse
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+/S1defs [
+	/underscore		[0 80 500 0]
+	/endash			[7 90 650 0]
+] def
+%%EndProlog
+%%BeginSetup
+mark
+/resolution 720 def
+setup
+2 setdecoding
+%%EndSetup
+%%Page: 1 1
+save
+mark
+1 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+9 B f
+(NAME)720 960 w
+10 R f
+(xcoast)1080 1080 w
+10 S1 f
+(\261)1368 1080 w
+10 R f
+(interactive coastline drawing for gridpak)4 1656 1 1466 1080 t
+9 B f
+(SYNOPSIS)720 1248 w
+10 B f
+(xcoast)1080 1368 w
+10 R f
+([)1379 1368 w
+10 I f
+(options)1412 1368 w
+10 R f
+(] [)1 99 1 1707 1368 t
+10 I f
+(\256le)1806 1368 w
+10 R f
+(])1928 1368 w
+9 B f
+(DESCRIPTION)720 1536 w
+10 I f
+(Xcoast)1080 1656 w
+10 R f
+( and to draw lines)4 774(is a menu-driven tool that allows the user to view coastlines from a data \256le)14 3234 2 1392 1656 t
+( lines may be saved to a \256le and used as the grid boundary in)14 2584( These)1 307(over them.)1 439 3 1080 1776 t
+10 I f
+(gridpak)4446 1776 w
+10 R f
+( look and)2 394(. The)1 249 2 4757 1776 t
+(feel \(and code\) is derived from)5 1277 1 1080 1896 t
+10 I f
+(x\256g)2391 1896 w
+10 R f
+(version 2.1.x.)1 553 1 2569 1896 t
+10 B f
+( 11 release 4 or higher)5 990(It runs under X version)4 1042 2 3189 1896 t
+10 R f
+(and)5256 1896 w
+(requires a two- or three-button mouse.)5 1600 1 1080 2016 t
+10 I f
+(\256le)2752 2016 w
+10 R f
+( description of)2 603(speci\256es the name of a \256le to be edited. The)9 1884 2 2913 2016 t
+(boundaries and the projection in the \256le will be read at the start of)13 2736 1 1080 2136 t
+10 I f
+(xcoast)3849 2136 w
+10 R f
+(.)4104 2136 w
+(When using a two-button mouse use the)6 1670 1 1080 2304 t
+10 S1 f
+(<)2786 2304 w
+10 R f
+(Meta)2842 2304 w
+10 S1 f
+(>)3047 2304 w
+10 R f
+( at the same time to effect the)7 1262(key and the right button)4 999 2 3139 2304 t
+(action of the middle button \(not tested\).)6 1633 1 1080 2424 t
+( by)1 138(Note: the coastline \256le format has changed back to the one used)11 2680 2 1080 2592 t
+10 I f
+(xcoast)3936 2592 w
+10 R f
+( once again)2 480( We)1 209(version 1.0.)1 482 3 4229 2592 t
+(have a higher resolution global coastline.)5 1682 1 1080 2712 t
+9 B f
+(OPTIONS)720 2880 w
+10 S1 f
+(\261)1080 3000 w
+10 B f
+(bg)1145 3000 w
+10 I f
+(color)1284 3000 w
+10 R f
+(Use)1440 3120 w
+10 I f
+(color)1628 3120 w
+10 R f
+(as the background color for the canvas and buttons.)8 2118 1 1872 3120 t
+10 B f
+(-bol[d])1080 3288 w
+10 I f
+(font)1402 3288 w
+10 R f
+(Cause the font used for displaying con\256rmation messages to be)9 2600 1 1440 3408 t
+10 I f
+(font)4073 3408 w
+10 R f
+(\(default = 8x13bold\).)2 868 1 4262 3408 t
+10 B f
+(-bu[tton])1080 3576 w
+10 I f
+(font)1496 3576 w
+10 R f
+(Cause the font used for most buttons to be)8 1752 1 1440 3696 t
+10 I f
+(font)3225 3696 w
+10 R f
+(\(default = 6x13\).)2 690 1 3414 3696 t
+10 B f
+(-data)1080 3864 w
+10 I f
+(\256le)1335 3864 w
+10 R f
+(Cause the \256le read for the coastline data to be)9 1893 1 1440 3984 t
+10 I f
+(\256le)3366 3984 w
+10 R f
+(.)3488 3984 w
+10 B f
+(-de)1080 4152 w
+10 R f
+(Turn on debugging mode \(for running)5 1563 1 1440 4152 t
+10 I f
+(xcoast)3036 4152 w
+10 R f
+(under dbx\).)1 468 1 3324 4152 t
+10 S1 f
+(\261)1080 4320 w
+10 B f
+(fg)1145 4320 w
+10 I f
+(color)1261 4320 w
+10 R f
+(Use)1440 4440 w
+10 I f
+(color)1628 4440 w
+10 R f
+(as the foreground color and default color for objects.)8 2167 1 1872 4440 t
+10 B f
+(-geom[etry])1080 4608 w
+10 I f
+(WxH+X+Y)1610 4608 w
+10 R f
+(Speci\256es the geometry for)3 1075 1 1440 4728 t
+10 I f
+(xcoast)2548 4728 w
+10 R f
+(application.)2836 4728 w
+10 B f
+(-iconG[eometry])1080 4896 w
+10 I f
+(+X+Y)1816 4896 w
+10 R f
+(Speci\256es the position for the icon.)5 1406 1 1440 5016 t
+10 S1 f
+(\261)1080 5184 w
+10 B f
+(internalBW)1145 5184 w
+10 I f
+(width)1684 5184 w
+10 R f
+(Use lines of width)3 754 1 1440 5304 t
+10 I f
+(width)2227 5304 w
+10 R f
+(between all buttons and panels \(default = 1\).)7 1831 1 2483 5304 t
+10 B f
+(-inv)1080 5472 w
+10 R f
+(Use inverse video \(white on black\).)5 1459 1 1440 5472 t
+10 S1 f
+(\261)1080 5640 w
+10 B f
+(le[ft])1145 5640 w
+10 R f
+(Change the position of the side panel window to the left of the canvas window.)14 3272 1 1440 5640 t
+10 S1 f
+(\261)1080 5808 w
+10 B f
+(mo[nochrome])1145 5808 w
+10 R f
+(Use black and white only.)4 1072 1 1440 5928 t
+10 B f
+(-nor[mal])1080 6096 w
+10 I f
+(font)1523 6096 w
+10 R f
+( used for the message panel and ruler numbers to be)10 2183(Cause the font)2 597 2 1440 6216 t
+10 I f
+(font)4256 6216 w
+10 R f
+( font is also used)4 716(. This)1 272 2 4412 6216 t
+(on the canvas when the selected font is not available in an X11 font \(default = \256xed\).)16 3525 1 1440 6336 t
+10 S1 f
+(\261)1080 6504 w
+10 B f
+(not[rack])1145 6504 w
+10 R f
+(Turn off cursor \(mouse\) tracking arrows.)5 1674 1 1440 6624 t
+10 B f
+(-ph)1080 6792 w
+10 I f
+(units)1258 6792 w
+10 R f
+(Make)1440 6912 w
+10 I f
+(xcoast)1700 6912 w
+10 R f
+(come up)1 349 1 1988 6912 t
+10 I f
+(units)2370 6912 w
+10 R f
+(high \(where units are cm\).)4 1082 1 2598 6912 t
+10 B f
+(-pw)1080 7080 w
+10 I f
+(units)1274 7080 w
+10 R f
+(Make)1440 7200 w
+10 I f
+(xcoast)1700 7200 w
+10 R f
+(come up)1 349 1 1988 7200 t
+10 I f
+(units)2370 7200 w
+10 R f
+(wide \(where units are cm\).)4 1098 1 2598 7200 t
+( 1)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7680 t
+cleartomark
+showpage
+restore
+%%EndPage: 1 1
+%%Page: 2 2
+save
+mark
+2 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+10 S1 f
+(\261)1080 960 w
+10 B f
+(ri[ght])1145 960 w
+10 R f
+(Change the position of the side panel window to the right of the canvas window \(default: left\).)16 3898 1 1440 1080 t
+10 S1 f
+(\261)1080 1248 w
+10 B f
+(sc[alablefonts])1145 1248 w
+10 R f
+(Allows use of the X11R5 scalable fonts.)6 1660 1 1440 1368 t
+10 S1 f
+(\261)1080 1536 w
+10 B f
+(nosc[alablefonts])1145 1536 w
+10 R f
+( might want to use this for debugging.)7 1578( You)1 238(Disables use of the X11R5 scalable fonts.)6 1715 3 1440 1656 t
+10 S1 f
+(\261)1080 1824 w
+10 B f
+(sh[owallbuttons])1145 1824 w
+10 R f
+(Show all the)2 552 1 1440 1944 t
+10 I f
+(xcoast)2043 1944 w
+10 R f
+( those relevant to the current drawing)6 1653(indicator buttons instead of only)4 1398 2 2349 1944 t
+( buttons)1 329( the)1 157(mode. Normally,)1 723 3 1440 2064 t
+10 I f
+(line width)1 407 1 2683 2064 t
+10 R f
+(,)3090 2064 w
+10 I f
+(grid mode)1 417 1 3149 2064 t
+10 R f
+(, etc. are only visible when they are relevant)8 1834 1 3566 2064 t
+( The)1 232( current drawing mode.)3 988(to the)1 243 3 1440 2184 t
+10 B f
+(-showallbuttons)2947 2184 w
+10 R f
+(option makes all of the indicator buttons)6 1730 1 3670 2184 t
+( takes up more screen real estate, but allows the user to see all settable)14 2928( This)1 246(visible at all times.)3 786 3 1440 2304 t
+(parameters.)1440 2424 w
+10 S1 f
+(\261)1080 2592 w
+10 B f
+(tr[ack])1145 2592 w
+10 R f
+(Turn on cursor \(mouse\) tracking arrows \(default\).)6 2034 1 1440 2712 t
+9 B f
+(COASTLINE DATA FILE)2 1055 1 720 2880 t
+10 R f
+( number of ways to specify the coastline)7 1681( A)1 140( coastlines, a data \256le must be provided.)7 1671(In order to draw the)4 828 4 1080 3000 t
+( line option)2 480( command)1 432( The)1 226(\256le are available.)2 710 4 1080 3120 t
+10 B f
+(-data)2965 3120 w
+10 I f
+(\256le)3224 3120 w
+10 R f
+( is the)2 263( Second)1 364(takes precedence over any others.)4 1390 3 3383 3120 t
+(environment variable)1 895 1 1080 3240 t
+10 I f
+(XCOASTDATA)2044 3240 w
+10 R f
+( the \256le)2 390( if no other data \256le has been speci\256ed,)8 1913(. Finally,)1 436 3 2661 3240 t
+10 I f
+(coastdb.dat)1080 3360 w
+10 R f
+(in the current directory is used.)5 1282 1 1577 3360 t
+9 B f
+(GRAPHICAL OBJECTS)1 990 1 720 3528 t
+10 R f
+(The objects in)2 586 1 1080 3648 t
+10 I f
+(xcoast)1701 3648 w
+10 R f
+(are divided into)2 649 1 1992 3648 t
+10 B f
+(primitive objects, coastline objects)3 1497 1 2677 3648 t
+10 R f
+(, and)1 205 1 4174 3648 t
+10 B f
+(grid objects)1 513 1 4415 3648 t
+10 R f
+(. Coastline)1 472 1 4928 3648 t
+( objects show)2 566( Grid)1 252(objects are drawn from a coastline database once a map projection has been chosen.)13 3502 3 1080 3768 t
+( primitive objects are)3 882( The)1 225( constant longitude and latitude.)4 1328(lines of)1 308 4 1080 3888 t
+10 I f
+(POLYLINE)3860 3888 w
+10 R f
+(and)4359 3888 w
+10 I f
+(SPLINE)4540 3888 w
+10 R f
+( points)1 282(. The)1 250 2 4868 3888 t
+( in the order in which they are)7 1263(within a primitive object are stored as a linked-list and are written to disk)13 3057 2 1080 4008 t
+( if they are going to be read by the)9 1489( should be drawn in a counter-clockwise direction)7 2077(drawn. They)1 549 3 1080 4128 t
+10 I f
+(grid)5233 4128 w
+10 R f
+( put into)2 350( the objects themselves will not be written in any reliable order and must be)14 3150(program. However,)1 820 3 1080 4248 t
+(the correct order with an editor.)5 1303 1 1080 4368 t
+( a)1 86( In)1 158( moved, deleted or added, or the whole object can be deleted.)11 2631(A primitive can have its points be)6 1445 4 1080 4536 t
+10 B f
+(save)1080 4656 w
+10 R f
+( a restore, the)3 564( After)1 277(operation, the primitive objects are saved as are the map projection parameters.)11 3261 3 1298 4656 t
+(coastline and grid objects must be rebuilt from the map projection information.)11 3246 1 1080 4776 t
+9 B f
+(DISPLAY WINDOWS)1 890 1 720 4944 t
+10 R f
+(Ten regions comprise the display area of)6 1762 1 1080 5064 t
+10 I f
+(xcoast)2890 5064 w
+10 R f
+( top ruler, side ruler, drawing)5 1287(: the command region,)3 968 2 3145 5064 t
+( message region, mouse function indicator region and)7 2204(mode region, editing mode region, \256lename region,)6 2116 2 1080 5184 t
+( and indicator region with buttons to set and show current line thickness, line style, color,)15 3734(canvas region,)1 586 2 1080 5304 t
+( region was inspired by the UPS debugger)7 1845( mouse function indicator)3 1096( \(The)1 270(and several other settings.)3 1109 4 1080 5424 t
+( Kent.\) The drawing and editing mode regions may be placed \(together\) to the left)14 3400(from the University of)3 920 2 1080 5544 t
+(or right of the the canvas window \(default: left\).)8 1985 1 1080 5664 t
+9 B f
+(COMMAND PANEL FUNCTIONS)2 1395 1 720 5832 t
+10 I f
+(Quit)1080 5952 w
+10 R f
+(Exit from)1 399 1 1440 5952 t
+10 I f
+(xcoast)1877 5952 w
+10 R f
+( and not saved, the user)5 1007(, discarding the \256gure. If the \256gure has been modi\256ed)9 2261 2 2132 5952 t
+( clicking mouse button 1 on a con\256rm/cancel popup)8 2260(will be asked to con\256rm the action, by)7 1700 2 1440 6072 t
+(menu.)1440 6192 w
+10 I f
+(Delete ALL)1 466 1 1080 6360 t
+10 R f
+(Delete all objects from the canvas window \(may be undone\).)9 2500 1 1440 6480 t
+10 I f
+(Undo)1080 6648 w
+10 R f
+(Undo the last object creation, deletion or modi\256cation.)7 2240 1 1440 6648 t
+10 I f
+(Redraw)1080 6816 w
+10 R f
+(Redraw the canvas.)2 794 1 1440 6816 t
+10 I f
+(Map Proj)1 394 1 1080 6984 t
+10 R f
+(Pressing mouse button 1 or)4 1145 1 1440 7104 t
+10 S1 f
+(<)2624 7104 w
+10 I f
+(Meta)2680 7104 w
+10 S1 f
+(>)2885 7104 w
+10 I f
+(p)2941 7104 w
+10 R f
+( a menu with several projection parameter widg-)7 2042(pops up)1 328 2 3030 7104 t
+(ets:)1440 7224 w
+( 2)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7704 t
+cleartomark
+showpage
+restore
+%%EndPage: 2 2
+%%Page: 3 3
+save
+mark
+3 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+10 I f
+(Projection)1440 960 w
+10 R f
+( SimpleMenu widget which offers you a choice of conformal projections -)11 3217(This is a)2 383 2 1800 1080 t
+(Mercator, Conformal Conic, and Stereographic.)4 1942 1 1800 1200 t
+10 I f
+(Latitude)1440 1368 w
+10 R f
+( central \(tangent\) latitude of the map projec-)7 1849(This is an AsciiTextWidget containing the)5 1751 2 1800 1488 t
+(tion.)1800 1608 w
+10 I f
+(Longitude)1440 1776 w
+10 R f
+(This is an AsciiTextWidget containing the central longitude of the map projection.)11 3390 1 1800 1896 t
+10 I f
+(Rotation)1440 2064 w
+10 R f
+( For)1 216( rotation angle of the map projection.)6 1598(This is an AsciiTextWidget containing the)5 1786 3 1800 2184 t
+(the Conic projection, this is the second tangent latitude instead.)9 2601 1 1800 2304 t
+10 I f
+(Lower left latitude)2 756 1 1440 2472 t
+(Lower left longitude)2 828 1 1440 2592 t
+(Upper right latitude)2 822 1 1440 2712 t
+(Upper right longitude)2 894 1 1440 2832 t
+10 R f
+( de\256ne the bounding rectangle of the region to be drawn.)10 2395(These four AsciiTextWidgets)2 1205 2 1800 2952 t
+( ratio as the display canvas, in which case)8 1802(This region may not have the same aspect)7 1798 2 1800 3072 t
+( that plots made with)4 959( Note)1 282( expanded to \256ll the canvas.)5 1265(the bounding rectangle is)3 1094 4 1800 3192 t
+(NCAR graphics using the same bounds will not expand in this way.)11 2798 1 1800 3312 t
+10 I f
+(Cancel)1440 3480 w
+10 R f
+(Pressing this button or)3 952 1 1800 3480 t
+10 S1 f
+(<)2795 3480 w
+10 I f
+(Meta)2851 3480 w
+10 S1 f
+(>)3056 3480 w
+10 I f
+(c)3112 3480 w
+10 R f
+( down the)2 432(will pop)1 349 2 3199 3480 t
+10 I f
+(Projection)4024 3480 w
+10 R f
+(panel without making)2 910 1 4490 3480 t
+(any changes to the map projection or domain bounds.)8 2203 1 1800 3600 t
+10 I f
+(Set)1440 3768 w
+10 R f
+(Pressing this button or)3 940 1 1800 3768 t
+10 S1 f
+(<)2779 3768 w
+10 I f
+(Meta)2835 3768 w
+10 S1 f
+(>)3040 3768 w
+10 I f
+(s)3096 3768 w
+10 R f
+( will)1 196( It)1 133(will initialize the map projection information.)5 1897 3 3174 3768 t
+(also tell it to start drawing the coastlines using that map projection.)11 2770 1 1800 3888 t
+10 I f
+(File)1080 4056 w
+10 R f
+(Pressing mouse button 3 on this button invokes)7 1949 1 1440 4056 t
+10 I f
+(Save)3422 4056 w
+10 R f
+(function without popping up the \256le panel.)6 1756 1 3643 4056 t
+(When you ask)2 597 1 1080 4224 t
+10 I f
+(xcoast)1715 4224 w
+10 R f
+( are the)2 321( These)1 310( four \256les are created.)4 922(to do a save operation,)4 953 4 2008 4224 t
+10 I f
+(x\256g)4553 4224 w
+10 R f
+(-like \256le, the \256le)3 703 1 4697 4224 t
+(for use by)2 427 1 1080 4344 t
+10 I f
+(grid)1546 4344 w
+10 R f
+(, the projection \256le which is included by)7 1708 1 1713 4344 t
+10 I f
+(tolat)3460 4344 w
+10 R f
+(, and a \256le used by the SEOM grid tools.)9 1756 1 3644 4344 t
+(When you provide the \256lename these \256les will be:)8 2073 1 1080 4464 t
+10 I f
+(\256lename)1080 4632 w
+10 R f
+(This is the private)3 770 1 1440 4752 t
+10 I f
+(xcoast)2252 4752 w
+10 R f
+( contains the projection)3 989( It)1 137( used when you read in a \256le.)7 1296(\256le that is)2 429 4 2549 4752 t
+( coastline information is)3 1029( The)1 233( polylines that you have drawn.)5 1354(information and the splines and)4 1344 4 1440 4872 t
+(not saved and will have to be redrawn by going to the)11 2276 1 1440 4992 t
+10 I f
+(Projection)3753 4992 w
+10 R f
+( clicking on)2 498(popup menu and)2 690 2 4212 4992 t
+10 I f
+(set)1440 5112 w
+10 R f
+(.)1551 5112 w
+10 I f
+(\256lename)1080 5280 w
+10 R f
+(.M)1418 5280 w
+(This is a \256le containing the coastline information)7 2033 1 1440 5400 t
+10 B f
+(almost)3508 5400 w
+10 R f
+(in the form expected by)4 988 1 3826 5400 t
+10 I f
+(grid)4849 5400 w
+10 R f
+( must)1 230(. It)1 154 2 5016 5400 t
+( sure that the corners meet and that the line segments are in the correct order.)15 3220(be edited to make)3 740 2 1440 5520 t
+( this \256le in a quasi-random order.)6 1401(The line segments are stored as linked lists and are written to)11 2559 2 1440 5640 t
+(Points within each linked list are in the order drawn.)9 2164 1 1440 5760 t
+10 I f
+(\256lename)1080 5928 w
+10 R f
+(.proj)1418 5928 w
+( with the projection information needed by)6 1829(This is a \256le)3 549 2 1440 6048 t
+10 I f
+(tolat)3863 6048 w
+10 R f
+(and by)1 289 1 4092 6048 t
+10 I f
+(plothist)4426 6048 w
+10 R f
+(\(if you ask for)3 628 1 4772 6048 t
+( should be renamed to proj.h before you do a)9 1863( It)1 127(coastline drawing\).)1 773 3 1440 6168 t
+10 I f
+(make tolat)1 427 1 4236 6168 t
+10 R f
+(.)4663 6168 w
+10 I f
+(\256lename)1080 6336 w
+10 R f
+(.uv)1418 6336 w
+( in the)2 294(This is a \256le containing the projection information and the grid boundary information)12 3666 2 1440 6456 t
+(map projection's)1 694 1 1440 6576 t
+10 I f
+(u,v)2179 6576 w
+10 R f
+( program)1 383( The)1 233(coordinate system.)1 769 3 2343 6576 t
+10 I f
+(to)3773 6576 w
+10 S f
+(_)3851 6576 w
+10 I f
+(latlon)3901 6576 w
+10 R f
+( convert these)2 592(can be used to)3 628 2 4180 6576 t
+(values to latitude, longitude.)3 1160 1 1440 6696 t
+(Mouse button 1 or)3 760 1 1080 6864 t
+10 S1 f
+(<)1873 6864 w
+10 I f
+(Meta)1929 6864 w
+10 S1 f
+(>)2134 6864 w
+10 I f
+(f)2190 6864 w
+10 R f
+(pops up a panel which contains several \256le-related functions:)8 2504 1 2251 6864 t
+10 I f
+(Current Filename)1 727 1 1440 7032 t
+10 R f
+( that will be used to)5 906(This is read-only AsciiTextWidget which contains the \256lename)7 2694 2 1800 7152 t
+(write output to a \256le)4 843 1 1800 7272 t
+10 I f
+(if there is no name speci\256ed in)6 1269 1 2676 7272 t
+10 R f
+(the)3978 7272 w
+10 I f
+(Filename)4133 7272 w
+10 R f
+(panel.)4543 7272 w
+( 3)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 1080 7752 t
+cleartomark
+showpage
+restore
+%%EndPage: 3 3
+%%Page: 4 4
+save
+mark
+4 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 1080 480 t
+10 I f
+(Filename)1440 960 w
+10 R f
+( the \256lename selected either by)5 1374(This is an editable AsciiTextWidget which contains)6 2226 2 1800 1080 t
+(clicking on a \256lename from the)5 1401 1 1800 1200 t
+10 I f
+(Alternatives)3255 1200 w
+10 R f
+(list or by typing a name in directly.)7 1608 1 3792 1200 t
+( window will)2 564(Pressing return in the Filename)4 1317 2 1800 1320 t
+10 I f
+(Load)3724 1320 w
+10 R f
+(the \256le and copy the name to the)7 1427 1 3973 1320 t
+10 I f
+(Current Filename)1 727 1 1800 1440 t
+10 R f
+(widget.)2560 1440 w
+10 I f
+(\(File\) Alternatives)1 743 1 1440 1608 t
+10 R f
+( will select that)3 656(Pressing mouse button 1 on a \256lename in the \256le alternatives window)11 2944 2 1800 1728 t
+(\256le by copying the \256lename into)5 1402 1 1800 1848 t
+10 I f
+(Filename)3248 1848 w
+10 R f
+( in this window)3 680( return)1 284(window. Pressing)1 765 3 3671 1848 t
+(will)1800 1968 w
+10 I f
+(Load)1996 1968 w
+10 R f
+(the \256le speci\256ed in the)4 965 1 2242 1968 t
+10 I f
+(Filename)3247 1968 w
+10 R f
+( or the)2 287(window \(if any\))2 673 2 3664 1968 t
+10 I f
+(Current Filename)1 735 1 4665 1968 t
+10 R f
+(widget.)1800 2088 w
+10 I f
+(Filename Mask)1 626 1 1440 2256 t
+10 R f
+( the search)2 446(A wildcard mask may be typed into this editable AsciiTextWidget to restrict)11 3154 2 1800 2376 t
+(of \256lenames to a subset ala the)6 1388 1 1800 2496 t
+10 I f
+(ls)3240 2496 w
+10 R f
+( will)1 207( return in this window)4 991(command. Pressing)1 843 3 3359 2496 t
+( string may be set by setting the X)8 1558( This)1 260( the current directory.)3 936(automatically rescan)1 846 4 1800 2616 t
+(toolkit resource)1 632 1 1800 2736 t
+10 S f
+(*)2465 2736 w
+10 B f
+(\256le)2515 2736 w
+10 S f
+(_)2643 2736 w
+10 B f
+(panel)2693 2736 w
+10 S f
+(*)2927 2736 w
+10 B f
+(mask)2977 2736 w
+10 S f
+(*)3205 2736 w
+10 B f
+(string)3255 2736 w
+10 R f
+(.)3505 2736 w
+10 I f
+(Current Directory)1 738 1 1440 2904 t
+10 R f
+( may be)2 370( It)1 145(This is an editable AsciiTextWidget which shows the current directory.)9 3085 3 1800 3024 t
+( pressed in this)3 630( return is)2 379( When)1 308(modi\256ed by the user to manually set a directory name.)9 2283 4 1800 3144 t
+(window the directory speci\256ed is scanned for \256les matching the)9 2621 1 1800 3264 t
+10 I f
+(Filenamemask)4454 3264 w
+10 R f
+(, if any.)2 321 1 5036 3264 t
+(The)1800 3504 w
+10 S1 f
+(\304)1996 3504 w
+10 R f
+( unix shell)2 451(\(tilde\) character may be used to specify a user's home directory, ala)11 2879 2 2070 3504 t
+(tilde expansion.)1 641 1 1800 3624 t
+10 I f
+(\(Directory\) Alternatives)1 970 1 1440 3792 t
+10 R f
+( directory alternatives list will do a)6 1459(Pressing mouse button 1 on a directory name in the)9 2141 2 1800 3912 t
+10 S1 f
+(")1800 4032 w
+10 R f
+(change directory)1 675 1 1841 4032 t
+10 S1 f
+(")2516 4032 w
+10 R f
+(to that directory.)2 679 1 2590 4032 t
+(Pressing mouse button 3 in either the \256le or)8 1864 1 1800 4272 t
+10 I f
+(Directory Alternatives)1 911 1 3704 4272 t
+10 R f
+(window will do a)3 745 1 4655 4272 t
+10 S1 f
+(")1800 4392 w
+10 R f
+(change directory)1 675 1 1841 4392 t
+10 S1 f
+(")2516 4392 w
+10 R f
+(to the parent directory.)3 933 1 2590 4392 t
+10 I f
+(Home)1440 4560 w
+10 R f
+(Pressing this button will change the directory to the)8 2124 1 1800 4560 t
+10 B f
+($HOME)3957 4560 w
+10 R f
+(directory of the user.)3 855 1 4357 4560 t
+10 I f
+(Rescan)1440 4728 w
+10 R f
+(Pressing this button or)3 922 1 1800 4728 t
+10 S1 f
+(<)2755 4728 w
+10 I f
+(Meta)2811 4728 w
+10 S1 f
+(>)3016 4728 w
+10 I f
+(r)3072 4728 w
+10 R f
+(will rescan the current directory.)4 1331 1 3144 4728 t
+10 I f
+(Cancel)1440 4896 w
+10 R f
+(Pressing this button or)3 970 1 1800 4896 t
+10 S1 f
+(<)2819 4896 w
+10 I f
+(Meta)2875 4896 w
+10 S1 f
+(>)3080 4896 w
+10 I f
+(c)3136 4896 w
+10 R f
+(will pop down the)3 797 1 3229 4896 t
+10 I f
+(File)4075 4896 w
+10 R f
+( making any)2 544(panel without)1 571 2 4285 4896 t
+(changes to the directory or \256le name.)6 1531 1 1800 5016 t
+10 I f
+(Save)1440 5184 w
+10 R f
+(Pressing this button or)3 931 1 1800 5184 t
+10 S1 f
+(<)2767 5184 w
+10 I f
+(Meta)2823 5184 w
+10 S1 f
+(>)3028 5184 w
+10 I f
+(s)3084 5184 w
+10 R f
+( contents of the canvas in the \256le)7 1396(will save the current)3 845 2 3159 5184 t
+(speci\256ed in the)2 683 1 1800 5304 t
+10 I f
+(Filename)2547 5304 w
+10 R f
+(window)2988 5304 w
+10 I f
+(if any)1 264 1 3374 5304 t
+10 R f
+( speci\256ed in the)3 744(, or the name)3 638 2 3638 5304 t
+10 I f
+(Current)5083 5304 w
+(Filename)1800 5424 w
+10 R f
+( the \256le already exists a con\256rmation popup menu)8 2102( If)1 137( former is empty.)3 727(if the)1 220 4 2214 5424 t
+( in the)2 272( there is a \256lename)4 802( If)1 136(will appear asking the user to con\256rm or cancel the save.)10 2390 4 1800 5544 t
+10 I f
+(Filename)1800 5664 w
+10 R f
+(window it is copied to the)5 1076 1 2210 5664 t
+10 I f
+(Current Filename)1 727 1 3319 5664 t
+10 R f
+(window.)4079 5664 w
+10 I f
+(Load)1440 5832 w
+10 R f
+(Pressing this button or)3 925 1 1800 5832 t
+10 S1 f
+(<)2759 5832 w
+10 I f
+(Meta)2815 5832 w
+10 S1 f
+(>)3020 5832 w
+10 I f
+(l)3076 5832 w
+10 R f
+( the)1 157(will clear the canvas of any current \256gure and read)9 2105 2 3138 5832 t
+( the \256lename speci\256ed in the)5 1281(\256gure from)1 480 2 1800 5952 t
+10 I f
+(Filename)3613 5952 w
+10 R f
+(menu item)1 452 1 4042 5952 t
+10 I f
+(if any)1 252 1 4546 5952 t
+10 R f
+(, or the name)3 602 1 4798 5952 t
+(speci\256ed in the)2 627 1 1800 6072 t
+10 I f
+(Current Filename)1 731 1 2464 6072 t
+10 R f
+( there is a \256gure currently)5 1088( If)1 136(if the former is empty.)4 944 3 3232 6072 t
+( and not saved, a popup)5 1058(on the canvas and any modi\256cations have been made to it)10 2542 2 1800 6192 t
+( asking if the user wishes to discard the current \256gure or)11 2342(query window will \256rst appear)4 1258 2 1800 6312 t
+(cancel the)1 417 1 1800 6432 t
+10 I f
+(Load)2258 6432 w
+10 R f
+( clicking the mouse)3 825( window can be popped down by)6 1416(operation. This)1 654 3 2505 6432 t
+(button on the)2 544 1 1800 6552 t
+10 I f
+(Dismiss)2377 6552 w
+10 R f
+(button.)2727 6552 w
+10 I f
+(xcoast)1800 6720 w
+10 R f
+(is able to read \256les created by version 1.0 of)9 1916 1 2097 6720 t
+10 I f
+(xcoast)4055 6720 w
+10 R f
+(, but your lines no longer)5 1090 1 4310 6720 t
+( may or may not be \256xable.)6 1144( This)1 244(overlay the coastlines.)2 906 3 1800 6840 t
+10 I f
+(Merge Read)1 498 1 1440 7008 t
+10 R f
+(Pressing this button or)3 934 1 1800 7128 t
+10 S1 f
+(<)2771 7128 w
+10 I f
+(Meta)2827 7128 w
+10 S1 f
+(>)3032 7128 w
+10 I f
+(r)3088 7128 w
+10 R f
+( from the \256lename speci\256ed in the)6 1443(will read the \256gure)3 793 2 3164 7128 t
+10 I f
+(Filename)1800 7248 w
+10 R f
+(window)2217 7248 w
+10 I f
+(if any)1 240 1 2579 7248 t
+10 R f
+( speci\256ed in the)3 672(, or the name)3 566 2 2819 7248 t
+10 I f
+(Current Filename)1 733 1 4096 7248 t
+10 R f
+(if the former)2 532 1 4868 7248 t
+( 4)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 1080 7728 t
+cleartomark
+showpage
+restore
+%%EndPage: 4 4
+%%Page: 5 5
+save
+mark
+5 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 1080 480 t
+(is empty, and merge it with the \256gure already shown on the canvas.)12 2792 1 1800 960 t
+(See)1800 1200 w
+10 I f
+(Load)1977 1200 w
+10 R f
+(above for a description of the popup message window.)8 2246 1 2216 1200 t
+9 B f
+(INDICATOR PANEL COMMAND DESCRIPTIONS)3 2095 1 720 1368 t
+10 R f
+(The indicator panel contains buttons to set certain drawing parameters such as line thickness, canvas)14 4320 1 1080 1488 t
+( mouse but-)2 496( Pressing)1 409( of the buttons use the same mouse buttons for setting values.)11 2586( All)1 198(grid, color, etc.)2 631 5 1080 1608 t
+( line thick-)2 465(ton 1 on the indicator will pop up a panel in which either a value may be typed \(e.g. for a)20 3855 2 1080 1728 t
+( those that expect a)4 833( For)1 214(ness\) or the mouse may be clicked on one of several buttons \(e.g. for color\).)14 3273 3 1080 1848 t
+(value, pressing return in the value part of the window will set the new value and pop down the menu.)19 4193 1 1080 1968 t
+( line thickness\) or cycle)4 1044( for)1 198( 2 on an indicator will decrement the value \(e.g.)9 2126(Pressing mouse button)2 952 4 1080 2136 t
+( mouse button 3 will increment the)6 1454( styles\), while pressing)3 949( line)1 219(through the options in one direction \(e.g.)6 1698 4 1080 2256 t
+(value or cycle through the options in the other direction.)9 2319 1 1080 2376 t
+10 I f
+(ZOOM SCALE)1 611 1 1080 2544 t
+10 R f
+( zoom scale is)3 635( The)1 237( set/increased/decreased with this button.)4 1735(The canvas zoom scale may be)5 1353 4 1440 2664 t
+( mouse button 2)3 678( Pressing)1 409( and grid are scaled, too.)5 1038(displayed within the zoom button. The ruler)6 1835 4 1440 2784 t
+( factor by 1.0 unless it is less than 1.0 already in which case it will)15 2980(will decrease the zoom)3 980 2 1440 2904 t
+( by 1.0 unless)3 574( mouse button 3 will increase the zoom factor)8 1897( Pressing)1 406(reduce to the nearest 0.25.)4 1083 4 1440 3024 t
+( the control key)3 660( Pressing)1 409( 1.0 in which case it will increase it to the nearest 0.25.)12 2338(it is less than)3 553 4 1440 3144 t
+(and mouse button 3 together will set the zoom scale to 1.)11 2364 1 1440 3264 t
+( the control key and)4 857(The \256gure may also be zoomed by de\256ning a zoom rectangle by pressing)12 3103 2 1440 3504 t
+( the mouse)2 457( Move)1 303( rectangle.)1 427( will de\256ne one corner of the zoom)7 1491( This)1 249(mouse button 1 together.)3 1033 6 1440 3624 t
+(and click mouse button 1 again to de\256ne the opposite corner of the zoom rectangle.)14 3437 1 1440 3744 t
+10 I f
+(GRID MODE)1 559 1 1080 3912 t
+10 R f
+(With this button the user selects whether or not to draw the latitude/longitude lines.)13 3435 1 1440 4032 t
+10 I f
+(GRID SCALE)1 566 1 1080 4200 t
+10 R f
+(Select the density of latitude/longitude lines to draw if)8 2323 1 1440 4320 t
+10 I f
+(GRID MODE)1 570 1 3807 4320 t
+10 R f
+( integer)1 322( An)1 200(is selected.)1 457 3 4421 4320 t
+( each ten degree square, constraining the allowable values.)8 2602(number of lines are drawn for)5 1358 2 1440 4440 t
+( pop-up window is the integer number of grid lines per ten degrees,)12 2879(NOTE: the number in the)4 1081 2 1440 4560 t
+(not the grid line spacing.)4 1023 1 1440 4680 t
+10 I f
+(COLOR)1080 4848 w
+10 R f
+( one of eight prede\256ned colors to draw with, or select that the)12 2598(The user may select)3 828 2 1440 4848 t
+10 I f
+(default)4903 4848 w
+10 R f
+(\(-fg\))5218 4848 w
+( are black, blue, green, cyan, red, magenta, yellow and)9 2354( eight colors)2 536( The)1 234(color is to be used.)4 836 4 1440 4968 t
+( selected color, but black is)5 1202( monochrome screens the objects are created with the)8 2309(white. On)1 449 3 1440 5088 t
+(used to draw the objects on the canvas.)7 1614 1 1440 5208 t
+10 I f
+(LINE WIDTH)1 566 1 1080 5376 t
+10 R f
+( width lines may be drawn but are)7 1475( Zero)1 263( lines may be selected with this button.)7 1674(The width of)2 548 4 1440 5496 t
+( and)1 186( are drawn with a width of one, while the default width of splines)13 2841( Coastlines)1 493(not useful.)1 440 4 1440 5616 t
+(polylines is two.)2 675 1 1440 5736 t
+10 I f
+(LINE STYLE)1 529 1 1080 5904 t
+10 R f
+( created, a dashed or dotted line)6 1362( Once)1 284( for line style are solid, dashed and dotted.)8 1820(The choices)1 494 4 1440 6024 t
+( dash)1 224( The)1 229( change the length of dashes or the spacing of dots respectively.)11 2721(may be updated to)3 786 4 1440 6144 t
+(length and dot gap can be changed from the default using the popup menu.)13 3088 1 1440 6264 t
+9 B f
+(DRAWING AND EDITING MODE PANELS)4 1795 1 720 6432 t
+10 R f
+( functions, modes)2 746(Icons in the drawing and editing mode panel windows represent object manipulation)11 3574 2 1080 6552 t
+( functions are selected by positioning the cursor)7 2037( Manipulation)1 615( or modi\256cation aids.)3 904(and other drawing)2 764 4 1080 6672 t
+( The)1 245( and clicking mouse button 1.)5 1343(over the icon representing the desired drawing/editing function)7 2732 3 1080 6792 t
+( The)1 223( its function appears in the message window.)7 1862(selected icon is highlighted, and a message describing)7 2235 3 1080 6912 t
+(hilighting remains on until another function is selected.)7 2266 1 1080 7032 t
+( 5)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7680 t
+cleartomark
+showpage
+restore
+%%EndPage: 5 5
+%%Page: 6 6
+save
+mark
+6 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+9 B f
+(DRAWING MODE PANEL COMMAND DESCRIPTIONS)4 2335 1 720 960 t
+10 R f
+(The drawing mode panel contains buttons used to create the various)10 2862 1 1080 1080 t
+10 I f
+(xcoast)3982 1080 w
+10 R f
+( the drawing)2 531(objects. Once)1 592 2 4277 1080 t
+( object is created by moving the mouse to the point on the canvas where the object)16 3455(mode is selected, the)3 865 2 1080 1200 t
+( that the mouse is moved to the second)8 1629( After)1 278( 1.)1 110(is to be placed and pressing and releasing mouse button)9 2303 4 1080 1320 t
+( pressed for each successive point, and)6 1645( button 1 is)3 502( Mouse)1 348(point and mouse button 1 is again pressed.)7 1825 4 1080 1440 t
+(mouse button 2 must be pressed to \256nish the object.)9 2144 1 1080 1560 t
+(At any time mouse button 3 may be pressed to cancel the creation of the object.)15 3298 1 1080 1728 t
+10 I f
+(POLYLINE)1080 1896 w
+10 R f
+( points by clicking)3 826( Enter)1 302( points\).)1 356(Create polylines \(line segments connecting a sequence of)7 2476 4 1440 2016 t
+( mouse button 2 to \256nish.)5 1068( Click)1 285( on the canvas window.)4 980(mouse button 1 at the desired positions)6 1627 4 1440 2136 t
+(To create a single point using the)6 1374 1 1440 2256 t
+10 I f
+(POLYLINE)2847 2256 w
+10 R f
+(button, press and release mouse button 2.)6 1696 1 3342 2256 t
+10 I f
+(INTERPOLATED SPLINE)1 1078 1 1080 2424 t
+10 R f
+( of a)2 203( control vectors in the same way as for creation)9 1995( Enter)1 286(Create \(cubic spline\) spline objects.)4 1476 4 1440 2544 t
+10 I f
+(POLYLINE)1440 2664 w
+10 R f
+( spline will)2 465( The)1 223( least three points \(two control vectors\) must be entered.)9 2336(object. At)1 438 4 1938 2664 t
+(pass through the entered points.)4 1300 1 1440 2784 t
+9 B f
+(EDITING MODE PANEL COMMAND DESCRIPTIONS)4 2270 1 720 3072 t
+10 R f
+( pressed, any objects that may be affected by that editing)10 2455(When a button in the editing mode panel is)8 1865 2 1080 3192 t
+( cannot be edited and do not have markers.)8 1774( Coastlines)1 483(operation will show their corner markers.)5 1692 3 1080 3312 t
+9 B f
+(SELECTING OBJECTS)1 965 1 720 3600 t
+10 R f
+( that touch one another, only one)6 1468(When multiple objects have points in common, e.g. two polylines)9 2852 2 1080 3720 t
+( be selected by clicking on that point. To select other objects, hold down the shift key while)17 3898(object can)1 422 2 1080 3840 t
+( repeatedly)1 467( By)1 202(pressing mouse button 1: the markers of one object will be temporarily highlighted.)12 3651 3 1080 3960 t
+( to cycle through all candidates)5 1305(clicking mouse button 1 while holding down the shift key, it is possible)12 3015 2 1080 4080 t
+( one box, click on the point)6 1229( deleting)1 403( To perform the selected action, e.g.)6 1576(for selection at that point.)4 1112 4 1080 4200 t
+( operation will be performed on the highlighted object.)8 2253( The)1 221(without holding down the shift key.)5 1468 3 1080 4320 t
+10 B f
+(Note:)1080 4560 w
+10 R f
+( reason)1 295(If the mouse is not clicked near enough to an object marker or for whatever)14 3135 2 1379 4560 t
+10 I f
+(xcoast)4844 4560 w
+10 R f
+(cannot)5134 4560 w
+10 S1 f
+(")1080 4680 w
+10 R f
+(\256nd)1121 4680 w
+10 S1 f
+(")1277 4680 w
+10 R f
+( square will temporarily appear above the mouse cur-)8 2192(the object the user is trying to select, a black)9 1856 2 1352 4680 t
+(sor.)1080 4800 w
+10 I f
+(MOVE POINT)1 599 1 1080 4968 t
+10 R f
+(Modify the position of a point of)6 1365 1 1440 5088 t
+10 I f
+(POLYLINE)2839 5088 w
+10 R f
+(and)3335 5088 w
+10 I f
+(SPLINE)3513 5088 w
+10 R f
+( unrestrained movement,)2 1010(objects. For)1 515 2 3875 5088 t
+(click mouse button 1 over the desired point, reposition the point, and click the)13 3234 1 1440 5208 t
+10 I f
+(left)4708 5208 w
+10 R f
+(button again.)1 530 1 4870 5208 t
+( the desired point and)4 920(For horizontally or vertically constrained move, click mouse button 2 on)10 3040 2 1440 5328 t
+( that once you choose the direction \(horizontal or)8 2059( Notice)1 336(move either horizontally or vertically.)4 1565 3 1440 5448 t
+( initially, it is)3 589( after moving the mouse)4 1039( If,)1 166(vertical\), movement is constrained in that direction.)6 2166 4 1440 5568 t
+( of the mouse relative to)5 1008(moved in the other direction a greater distance than the current position)11 2952 2 1440 5688 t
+( otherwords if you \256rst)4 1016( In)1 166( direction.)1 430(the starting point, then that will be the new constraint)9 2348 4 1440 5808 t
+(move the mouse)2 695 1 1440 5928 t
+10 I f
+(horizontally)2180 5928 w
+10 R f
+(one cm \(say\) then move it)5 1140 1 2709 5928 t
+10 I f
+(vertically)3894 5928 w
+10 R f
+( will)1 200(1.3 cm, the direction)3 884 2 4316 5928 t
+(switch to)1 380 1 1440 6048 t
+10 I f
+(vertical)1861 6048 w
+10 R f
+(until any)1 369 1 2207 6048 t
+10 I f
+(horizontal)2618 6048 w
+10 R f
+( the object is positioned)4 1018( When)1 313(motion exceeds 1.3 cm.)3 997 3 3072 6048 t
+( move)1 274(where desired, click mouse button 1 to place it if that button was used to start the)16 3686 2 1440 6168 t
+(\(unconstrained\), or mouse button 2 \(constrained\) if that button was used.)10 2987 1 1440 6288 t
+10 I f
+(ADD POINTS)1 577 1 1080 6456 t
+10 R f
+(Add points to)2 561 1 1440 6576 t
+10 I f
+(POLYLINE)2034 6576 w
+10 R f
+(and)2529 6576 w
+10 I f
+(SPLINE)2706 6576 w
+10 R f
+(objects.)3067 6576 w
+10 I f
+(DELETE POINTS)1 739 1 1080 6744 t
+10 R f
+(Delete points from)2 765 1 1440 6864 t
+10 I f
+(POLYLINE)2238 6864 w
+10 R f
+(and)2733 6864 w
+10 I f
+(SPLINE)2910 6864 w
+10 R f
+(objects.)3271 6864 w
+10 I f
+(DELETE)1080 7032 w
+10 R f
+( a)1 79( Delete)1 328(Click mouse button 1 on an object to delete the object.)10 2279 3 1440 7152 t
+10 I f
+(region)4161 7152 w
+10 R f
+(of the canvas by click-)4 943 1 4457 7152 t
+(ing mouse button 2 and dragging the mouse to de\256ne an area of objects to delete.)15 3360 1 1440 7272 t
+( 6)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7752 t
+cleartomark
+showpage
+restore
+%%EndPage: 6 6
+%%Page: 7 7
+save
+mark
+7 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+10 I f
+(UPDATE)1080 960 w
+10 R f
+( object, the current settings for the indicator buttons \(line)9 2473(By pressing mouse button 1 on an)6 1487 2 1440 1080 t
+( update are copied into that object.)6 1486(width, line style, color, etc.\) which have been selected for)9 2474 2 1440 1200 t
+(When)1440 1320 w
+10 I f
+(xcoast)1719 1320 w
+10 R f
+(is started, all indicator buttons which are components of objects are selected for)12 3384 1 2016 1320 t
+( indicator, click on the update button and click mouse button 1 on the)13 2978( unselect an)2 505(update. To)1 477 3 1440 1440 t
+( that indicator is selected the fore-)6 1418( When)1 306( of the indicator.)3 690(small button in the upper-right corner)5 1546 4 1440 1560 t
+( it is unselected the background color \(default white\))8 2187( When)1 307(ground color \(default black\) shows.)4 1466 3 1440 1680 t
+(shows.)1440 1800 w
+( object that are selected by the indi-)7 1485(If mouse button 2 is clicked on an object, the settings in the)12 2475 2 1440 2040 t
+( copy selected attri-)3 811( one may)2 386( Thus,)1 293(cator buttons are copied into those indicator button settings.)8 2470 4 1440 2160 t
+(butes of one object to another.)5 1249 1 1440 2280 t
+10 I f
+(SPLINE)1080 2448 w
+10 S1 f
+(<)1441 2448 w
+10 I f
+(-)1497 2448 w
+10 S1 f
+(>)1530 2448 w
+10 I f
+(POLYLINE)1619 2448 w
+10 R f
+(Turn a)1 271 1 1440 2568 t
+10 I f
+(POLYLINE)1744 2568 w
+10 R f
+(into an)1 283 1 2239 2568 t
+10 I f
+(INTERPOLATED SPLINE)1 1078 1 2555 2568 t
+10 R f
+(object or vice versa.)3 827 1 3666 2568 t
+9 B f
+(PANNING)720 2736 w
+10 R f
+( mouse button 1 in)4 789( Clicking)1 414( rulers.)1 288(The \256gure may be panned by clicking mouse button 1, 2 or 3 in the)14 2829 4 1080 2856 t
+( to the left by 2 cm, adjusted for zoom factor. Clicking mouse button 3)14 2988(the top ruler will pan the image)6 1332 2 1080 2976 t
+( pressing and)2 551( By)1 187( image right by the same amount.)6 1407(in the top ruler will pan the)6 1154 4 1080 3096 t
+10 I f
+(holding)4416 3096 w
+10 R f
+(mouse button 2)2 641 1 4759 3096 t
+(the user may drag the ruler by the amount desired, thus panning with more control.)14 3424 1 1080 3216 t
+( on the right of the)5 786(The \256gure is panned up and down in the same way by clicking the mouse in the ruler)17 3534 2 1080 3384 t
+( the \256gure can be returned to its origin by clicking mouse button 1 in the home box.)17 3478(canvas. Also,)1 576 2 1080 3504 t
+( key to return the \256gure to the origin.)8 1583(The arrow keys may also be used to pan the image and the home)13 2737 2 1080 3672 t
+(Also, pressing the Control Key and mouse button 2 will pan the \256gure to the origin.)15 3466 1 1080 3792 t
+9 B f
+(X DEFAULTS)1 590 1 720 4080 t
+10 R f
+( resources correspond to the command line)6 1851( These)1 318(The overall widget name\(Class\) is xcoast\(XCoast\).)5 2151 3 1080 4200 t
+(arguments:)1080 4320 w
+( Command-line equivalent)2 1082( Default)1 431( Type)1 304(Name Class)1 587 4 1080 4560 t
+10 S f
+(_ _____________________________________________________________)1 3052 1 1080 4580 t
+10 R f
+( \(false\) and -right \(true\))4 973( -left)1 265( false)1 221( boolean)1 613(justify Justify)1 556 5 1080 4700 t
+( -pwidth)1 377( \257oat 24)2 476(pwidth Width)1 594 3 1080 4820 t
+( -pheight)1 399( 24)1 199( \257oat)1 244(pheight Height)1 605 4 1080 4940 t
+( and -notrack)2 542( -track)1 430( on)1 133( boolean)1 415(trackCursor Track)1 868 5 1080 5060 t
+( -inverse)1 486( off)1 149(reverseVideo ReverseVideo boolean)2 1676 3 1080 5180 t
+( -debug)1 442( off)1 149(debug Debug boolean)2 1024 3 1080 5300 t
+( -normal)1 415( \256xed)1 266(normalFont NormalFont string)2 1580 3 1080 5420 t
+( -bold)1 475( 8x13bold)1 444( string)1 426(boldFont ButtonFont)1 1083 4 1080 5540 t
+( -showallbuttons)1 738( false)1 221(showallbuttons ShowAllButtons boolean)2 1722 3 1080 5660 t
+( 1 -internalBW)2 615(internalborderwidth InternalBorderWidth integer)2 2237 2 1080 5780 t
+( -scalablefonts)1 653( false)1 221(scalablefonts ScalableFonts boolean)2 1596 3 1080 5900 t
+( -monochrome)1 659( false)1 221(monochrome Monochrome boolean)2 1777 3 1080 6020 t
+( -\257ushleft)1 460( false)1 221(\257ushleft FlushLeft boolean)2 1495 3 1080 6140 t
+( black)1 315(color0 Color0 pixel)2 865 2 1080 6260 t
+( blue)1 271(color1 Color1 pixel)2 865 2 1080 6380 t
+( green)1 320(color2 Color2 pixel)2 865 2 1080 6500 t
+( cyan)1 287(color3 Color3 pixel)2 865 2 1080 6620 t
+( red)1 226(color4 Color4 pixel)2 865 2 1080 6740 t
+( magenta)1 437(color5 Color5 pixel)2 865 2 1080 6860 t
+( yellow)1 371(color6 Color6 pixel)2 865 2 1080 6980 t
+( white)1 321(color7 Color7 pixel)2 865 2 1080 7100 t
+10 S f
+(_ _____________________________________________________________)1 3052 1 1080 7120 t
+10 R f
+(The following are the default keyboard accelerators as distributed)8 2685 1 1080 7240 t
+( 7)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7720 t
+cleartomark
+showpage
+restore
+%%EndPage: 7 7
+%%Page: 8 8
+save
+mark
+8 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+(in the XCoast.ad app-defaults \256le:)4 1400 1 1080 960 t
+( Function)1 422(Keys \(Context\))1 621 2 1080 1080 t
+(\(Main xcoast panels\))2 853 1 1080 1200 t
+10 S1 f
+(<)1080 1320 w
+10 R f
+(Meta)1136 1320 w
+10 S1 f
+(>)1341 1320 w
+10 R f
+(q Quit xcoast)2 549 1 1397 1320 t
+10 S1 f
+(<)1080 1440 w
+10 R f
+(Meta)1136 1440 w
+10 S1 f
+(>)1341 1440 w
+10 R f
+(d Delete all objects from canvas)5 1323 1 1397 1440 t
+10 S1 f
+(<)1080 1560 w
+10 R f
+(Meta)1136 1560 w
+10 S1 f
+(>)1341 1560 w
+10 R f
+(u Undo)1 305 1 1397 1560 t
+10 S1 f
+(<)1080 1680 w
+10 R f
+(Meta)1136 1680 w
+10 S1 f
+(>)1341 1680 w
+10 R f
+(r Redraw)1 376 1 1397 1680 t
+10 S1 f
+(<)1080 1800 w
+10 R f
+(Meta)1136 1800 w
+10 S1 f
+(>)1341 1800 w
+10 R f
+(f popup File menu)3 760 1 1397 1800 t
+10 S1 f
+(<)1080 1920 w
+10 R f
+(Meta)1136 1920 w
+10 S1 f
+(>)1341 1920 w
+10 R f
+(p popup Projection menu)3 1032 1 1397 1920 t
+10 S1 f
+(<)1080 2040 w
+10 R f
+(Meta)1136 2040 w
+10 S1 f
+(>)1341 2040 w
+10 R f
+(l \(re\)Load \256gure from current \256le)5 1378 1 1397 2040 t
+10 S1 f
+(<)1080 2160 w
+10 R f
+(Meta)1136 2160 w
+10 S1 f
+(>)1341 2160 w
+10 R f
+(s Save \256gure to current \256le)5 1119 1 1397 2160 t
+(\(Popup \256le panel\))2 732 1 1080 2400 t
+10 S1 f
+(<)1080 2520 w
+10 R f
+(Meta)1136 2520 w
+10 S1 f
+(>)1341 2520 w
+10 R f
+(r Rescan current directory)3 1062 1 1397 2520 t
+10 S1 f
+(<)1080 2640 w
+10 R f
+(Meta)1136 2640 w
+10 S1 f
+(>)1341 2640 w
+10 R f
+(c Cancel)1 354 1 1397 2640 t
+10 S1 f
+(<)1080 2760 w
+10 R f
+(Meta)1136 2760 w
+10 S1 f
+(>)1341 2760 w
+10 R f
+(l Load \256gure)2 532 1 1397 2760 t
+10 S1 f
+(<)1080 2880 w
+10 R f
+(Meta)1136 2880 w
+10 S1 f
+(>)1341 2880 w
+10 R f
+(s Save \256gure)2 532 1 1397 2880 t
+10 S1 f
+(<)1080 3000 w
+10 R f
+(Meta)1136 3000 w
+10 S1 f
+(>)1341 3000 w
+10 R f
+(m Merge read into current \256gure)5 1345 1 1397 3000 t
+9 B f
+(WIDGET TREE)1 670 1 720 3288 t
+10 R f
+(Below is the widget structure of)5 1359 1 1080 3408 t
+10 I f
+(xcoast)2480 3408 w
+10 R f
+( widget class name is given \256rst, followed by the widget)10 2411(. The)1 254 2 2735 3408 t
+(instance name.)1 601 1 1080 3528 t
+(XCoast xcoast)1 621 1 1080 3768 t
+(Form form)1 477 1 1344 3888 t
+(Form commands)1 716 1 1608 4008 t
+(Command quit)1 639 1 1872 4128 t
+(Command delete)1 721 1 1872 4248 t
+10 S f
+(_)2593 4248 w
+10 R f
+(all)2643 4248 w
+(Command undo)1 683 1 1872 4368 t
+(Command redraw)1 759 1 1872 4488 t
+(Command \256le)1 611 1 1872 4608 t
+(Command mapproj)1 816 1 1872 4728 t
+(Form msg)1 417 1 1608 4848 t
+10 S f
+(_)2025 4848 w
+10 R f
+(form)2075 4848 w
+(Label \256le)1 421 1 1872 4968 t
+10 S f
+(_)2293 4968 w
+10 R f
+(name)2343 4968 w
+(Text message)1 587 1 1872 5088 t
+(Box mode)1 455 1 1608 5208 t
+10 S f
+(_)2063 5208 w
+10 R f
+(panel)2113 5208 w
+(Label label)1 487 1 1872 5328 t
+( \(one for each of the 2 drawing mode buttons\))9 1904(Command button)1 739 2 1872 5448 t
+(Label label)1 487 1 1872 5568 t
+( \(one for each of the 6 editing mode buttons\))9 1855(Command button)1 739 2 1872 5688 t
+(Label topruler)1 609 1 1608 5808 t
+(Label canvas)1 564 1 1608 5928 t
+(Label unitbox)1 599 1 1608 6048 t
+(Label sideruler)1 642 1 1608 6168 t
+(Viewport ind)1 538 1 1608 6288 t
+10 S f
+(_)2146 6288 w
+10 R f
+(viewport)2196 6288 w
+(Core clip)1 410 1 1872 6408 t
+(Scrollbar horizontal)1 837 1 1872 6528 t
+(Box ind)1 361 1 1872 6648 t
+10 S f
+(_)2233 6648 w
+10 R f
+(panel)2283 6648 w
+(Form button)1 539 1 2136 6768 t
+10 S f
+(_)2675 6768 w
+10 R f
+(form \(one for each of the 5 indicator buttons\))8 1871 1 2725 6768 t
+(Command button)1 739 1 2400 6888 t
+( \(only those indicators that affect creation)6 1711(Toggle update)1 615 2 2400 7008 t
+(of objects have update toggles\))4 1274 1 2928 7128 t
+( 8)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7680 t
+cleartomark
+showpage
+restore
+%%EndPage: 8 8
+%%Page: 9 9
+save
+mark
+9 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+(TransientShell x\256g)1 805 1 1344 960 t
+10 S f
+(_)2149 960 w
+10 R f
+(\256le)2199 960 w
+10 S f
+(_)2327 960 w
+10 R f
+(menu)2377 960 w
+(Form \256le)1 411 1 1608 1080 t
+10 S f
+(_)2019 1080 w
+10 R f
+(panel)2069 1080 w
+(Label \256le)1 421 1 1872 1200 t
+10 S f
+(_)2293 1200 w
+10 R f
+(status)2343 1200 w
+(Label num)1 471 1 1872 1320 t
+10 S f
+(_)2343 1320 w
+10 R f
+(objects)2393 1320 w
+(Label cur)1 420 1 1872 1440 t
+10 S f
+(_)2292 1440 w
+10 R f
+(\256le)2342 1440 w
+10 S f
+(_)2470 1440 w
+10 R f
+(label)2520 1440 w
+(Text cur)1 376 1 1872 1560 t
+10 S f
+(_)2248 1560 w
+10 R f
+(\256le)2298 1560 w
+10 S f
+(_)2426 1560 w
+10 R f
+(name)2476 1560 w
+(Label \256le)1 421 1 1872 1680 t
+10 S f
+(_)2293 1680 w
+10 R f
+(label)2343 1680 w
+(Text \256le)1 377 1 1872 1800 t
+10 S f
+(_)2249 1800 w
+10 R f
+(name)2299 1800 w
+(Label \256le)1 388 1 1872 1920 t
+10 S f
+(_)2260 1920 w
+10 R f
+(alt)2310 1920 w
+10 S f
+(_)2410 1920 w
+10 R f
+(label)2460 1920 w
+(Viewport vport)1 654 1 1872 2040 t
+(Core clip)1 410 1 2136 2160 t
+(Scrollbar vertical)1 731 1 2136 2280 t
+(List \256le)1 350 1 2136 2400 t
+10 S f
+(_)2486 2400 w
+10 R f
+(list)2536 2400 w
+10 S f
+(_)2659 2400 w
+10 R f
+(panel)2709 2400 w
+(Label mask)1 504 1 1872 2520 t
+10 S f
+(_)2376 2520 w
+10 R f
+(label)2426 2520 w
+(Text mask)1 460 1 1872 2640 t
+(Label dir)1 404 1 1872 2760 t
+10 S f
+(_)2276 2760 w
+10 R f
+(label)2326 2760 w
+(Text dir)1 360 1 1872 2880 t
+10 S f
+(_)2232 2880 w
+10 R f
+(name)2282 2880 w
+(Label dir)1 404 1 1872 3000 t
+10 S f
+(_)2276 3000 w
+10 R f
+(alt)2326 3000 w
+10 S f
+(_)2426 3000 w
+10 R f
+(label)2476 3000 w
+(Command home)1 672 1 1872 3120 t
+(Viewport dirvport)1 765 1 1872 3240 t
+(Core clip)1 410 1 2136 3360 t
+(Scrollbar vertical)1 731 1 2136 3480 t
+(List dir)1 333 1 2136 3600 t
+10 S f
+(_)2469 3600 w
+10 R f
+(list)2519 3600 w
+10 S f
+(_)2642 3600 w
+10 R f
+(panel)2692 3600 w
+(Command rescan)1 737 1 1872 3720 t
+(Command cancel)1 737 1 1872 3840 t
+(Command save)1 660 1 1872 3960 t
+(Command load)1 655 1 1872 4080 t
+(Command merge)1 732 1 1872 4200 t
+(TransientShell x\256g)1 805 1 1344 4440 t
+10 S f
+(_)2149 4440 w
+10 R f
+(\256le)2199 4440 w
+10 S f
+(_)2327 4440 w
+10 R f
+(msg)2377 4440 w
+(Form \256le)1 411 1 1608 4560 t
+10 S f
+(_)2019 4560 w
+10 R f
+(msg)2069 4560 w
+10 S f
+(_)2236 4560 w
+10 R f
+(panel)2286 4560 w
+(Text \256le)1 377 1 1872 4680 t
+10 S f
+(_)2249 4680 w
+10 R f
+(msg)2299 4680 w
+10 S f
+(_)2466 4680 w
+10 R f
+(win)2516 4680 w
+(Command dismiss)1 784 1 1872 4800 t
+(TransientShell query)1 876 1 1344 5040 t
+10 S f
+(_)2220 5040 w
+10 R f
+(popup)2270 5040 w
+(Form query)1 510 1 1608 5160 t
+10 S f
+(_)2118 5160 w
+10 R f
+(form)2168 5160 w
+(Label message)1 631 1 1872 5280 t
+(Command yes)1 616 1 1872 5400 t
+(Command no)1 583 1 1872 5520 t
+(Command cancel)1 737 1 1872 5640 t
+(TransientShell x\256g)1 805 1 1344 5880 t
+10 S f
+(_)2149 5880 w
+10 R f
+(set)2199 5880 w
+10 S f
+(_)2310 5880 w
+10 R f
+(proj)2360 5880 w
+10 S f
+(_)2521 5880 w
+10 R f
+(panel)2571 5880 w
+(Form form)1 477 1 1608 6000 t
+( Projections/Limits)1 773(Label Map)1 674 2 1872 6120 t
+(Label Projection =)2 826 1 1872 6240 t
+(MenuButton Mercator)1 937 1 1872 6360 t
+(SimpleMenu menu)1 805 1 2136 6480 t
+(SmeBSB Mercator)1 799 1 2400 6600 t
+( Conic)1 272(SmeBSB Conformal)1 867 2 2400 6720 t
+(SmeBSB Stereographic)1 988 1 2400 6840 t
+( =)1 89(Label Latitude)1 626 2 1872 6960 t
+(Text latitude)1 582 1 1872 7080 t
+( =)1 89(Label Longitude)1 704 2 1872 7200 t
+( 9)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7680 t
+cleartomark
+showpage
+restore
+%%EndPage: 9 9
+%%Page: 10 10
+save
+mark
+10 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+(Text longitude)1 660 1 1872 960 t
+( =)1 89(Label Rotation)1 638 2 1872 1080 t
+(Text rotation)1 593 1 1872 1200 t
+( left Latitude =)3 621(Label Lower)1 553 2 1872 1320 t
+(Text minmax)1 610 1 1872 1440 t
+( left Longitude =)3 699(Label Lower)1 553 2 1872 1560 t
+(Text minmax)1 610 1 1872 1680 t
+( right Latitude =)3 677(Label Upper)1 542 2 1872 1800 t
+(Text minmax)1 610 1 1872 1920 t
+( right Longitude =)3 755(Label Upper)1 542 2 1872 2040 t
+(Text minmax)1 610 1 1872 2160 t
+(Command cancel)1 737 1 1872 2280 t
+(Command set)1 594 1 1872 2400 t
+9 B f
+(BUGS and RESTRICTIONS)2 1160 1 720 2568 t
+10 R f
+(Please send bug reports, \256xes, new features etc. to:)8 2096 1 1080 2688 t
+(kate)1080 2808 w
+10 S1 f
+(@)1246 2808 w
+10 R f
+(ahab.rutgers.edu \(Kate Hedstrom\))2 1373 1 1338 2808 t
+( be the same as the order in which)8 1494(The order in which the primitive objects are written to disk should)11 2826 2 1080 2976 t
+(they were created.)2 743 1 1080 3096 t
+( are altered as a by product of the operation.)9 1846(Not all operations employ smart redrawing of objects which)8 2474 2 1080 3264 t
+(You may need to use)4 875 1 1080 3384 t
+10 I f
+(Redraw)1988 3384 w
+10 R f
+(in these cases.)2 584 1 2332 3384 t
+(Must compile)1 569 1 1080 3552 t
+10 I f
+(xcoast)1690 3552 w
+10 R f
+(with)1986 3552 w
+10 B f
+(-DOPENWIN)2205 3552 w
+10 R f
+(in order to make)3 708 1 2841 3552 t
+10 I f
+(xcoast)3591 3552 w
+10 R f
+(handle OpenWindows scalable fonts)3 1512 1 3888 3552 t
+(correctly.)1080 3672 w
+( screen width.)2 579(Some servers do not allow bitmaps/pixmaps taller than the screen height or wider than the)14 3741 2 1080 3840 t
+( you need)2 430( If)1 145( limit on the width of the top ruler and height of the side ruler.)14 2778(That is why there is a)5 967 4 1080 3960 t
+( MAX)1 282(wider/taller rulers AND your server allows bigger pixmaps, you may de\256ne)10 3255 2 1080 4080 t
+10 S f
+(_)4617 4080 w
+10 R f
+(TOPRULER)4667 4080 w
+10 S f
+(_)5184 4080 w
+10 R f
+(WD)5234 4080 w
+(and/or MAX)1 530 1 1080 4200 t
+10 S f
+(_)1610 4200 w
+10 R f
+(SIDERULER)1660 4200 w
+10 S f
+(_)2210 4200 w
+10 R f
+( example, to have a max-)5 1083( For)1 213(HT in your Imake\256le in the DEFINES line.)7 1844 3 2260 4200 t
+(imum top ruler width of 1160 pixels, add -DMAX)8 2159 1 1080 4320 t
+10 S f
+(_)3239 4320 w
+10 R f
+(TOPRULER)3289 4320 w
+10 S f
+(_)3806 4320 w
+10 R f
+( line in)2 318(WD=1160 to your DEFINES)3 1226 2 3856 4320 t
+(the Imake\256le.)1 557 1 1080 4440 t
+( must compile)2 607( You)1 250( relates to pixmaps in widgets.)5 1316(There is a bug in OpenWindows 2.0 which)7 1847 4 1080 4608 t
+10 I f
+(xcoast)5145 4608 w
+10 R f
+(with the)1 333 1 1080 4728 t
+10 B f
+(-DOPENWIN)1446 4728 w
+10 S f
+(_)2040 4728 w
+10 B f
+(BUG)2090 4728 w
+10 R f
+(option for this problem.)3 974 1 2340 4728 t
+(If the image is panned or the)6 1190 1 1080 4896 t
+10 I f
+(xcoast)2303 4896 w
+10 R f
+( middle of an operation)4 968(window iconi\256ed and de-iconi\256ed during the)5 1841 2 2591 4896 t
+( can be corrected using)4 975( This)1 251(\(e.g. while drawing a line\), the picture will be distorted.)9 2362 3 1080 5016 t
+10 I f
+(Redraw)4707 5016 w
+10 R f
+(after the)1 343 1 5057 5016 t
+(operation is complete.)2 901 1 1080 5136 t
+9 B f
+(SEE ALSO)1 445 1 720 5304 t
+10 R f
+(Wilkin and Hedstrom)2 882 1 1080 5424 t
+10 I f
+(Un\256nished gridpak manual)2 1110 1 1995 5424 t
+9 B f
+(ACKNOWLEDGEMENT)720 5592 w
+(COPYRIGHT)720 5712 w
+10 R f
+(Original Copyright \(c\) 1985 by Supoj Sutanthavibul)6 2137 1 1080 5832 t
+( copy, modify, distribute, and sell this software and its documentation for any purpose)13 3571(Permission to use,)2 749 2 1080 6000 t
+( copyright notice appear in all copies and that both)9 2094(is hereby granted without fee, provided that the above)8 2226 2 1080 6120 t
+( notice and this permission notice appear in supporting documentation. No representations)11 3750(that copyright)1 570 2 1080 6240 t
+( is provided)2 510( It)1 138( this software for any purpose.)5 1309(are made about suitability of)4 1223 4 1080 6360 t
+10 S1 f
+(")4304 6360 w
+10 R f
+(as is)1 194 1 4345 6360 t
+10 S1 f
+(")4539 6360 w
+10 R f
+(without express or)2 776 1 4624 6360 t
+(implied warranty.)1 718 1 1080 6480 t
+9 B f
+(AUTHORS)720 6648 w
+10 I f
+(xcoast)1080 6768 w
+10 R f
+( on)1 142(is based)1 335 2 1376 6768 t
+10 I f
+(x\256g)1895 6768 w
+10 R f
+( is a list of the people who)7 1171( Here)1 268(2.1, to which many people have contributed.)6 1880 3 2081 6768 t
+(have contributed the most \(in chronological order\):)6 2089 1 1080 6888 t
+(Original author:)1 649 1 1080 7128 t
+(Supoj Sutanthavibul, University of Texas at Austin)6 2095 1 1080 7248 t
+( 10)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7728 t
+cleartomark
+showpage
+restore
+%%EndPage: 10 10
+%%Page: 11 11
+save
+mark
+11 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+(Original X11 port by:)3 893 1 1080 960 t
+(Ken Yap, Rochester)2 822 1 1080 1080 t
+(Variable window sizes, cleanup of X11 port, right hand side panel:)10 2753 1 1080 1320 t
+(Dana Chee, Bellcore)2 844 1 1080 1440 t
+(Cleanup of color port to X11 by:)6 1358 1 1080 1680 t
+(John T. Kohl, MIT)3 782 1 1080 1800 t
+10 B f
+(Version 2.0:)1 524 1 1080 2040 t
+10 R f
+(Multiple line thicknesses, bottom panel, line style/thickness modi\256cation of objects by:)10 3569 1 1080 2160 t
+(Brian V. Smith, Lawrence Berkeley Laboratory)5 1944 1 1080 2280 t
+(\(standard disclaimer applies\))2 1169 1 1080 2400 t
+(\(bvsmith)1080 2520 w
+10 S1 f
+(@)1436 2520 w
+10 R f
+(lbl.gov\))1528 2520 w
+(Popup change-object menu by:)3 1264 1 1080 2760 t
+(Jon Tombs)1 450 1 1080 2880 t
+(Frank Schmuck)1 638 1 1080 3000 t
+(Zooming and panning functions, shift key select mechanism by:)8 2626 1 1080 3240 t
+(Dieter Pellkofer)1 648 1 1080 3360 t
+(Henning Spruth)1 644 1 1080 3480 t
+10 B f
+(Version 2.1:)1 524 1 1080 3720 t
+10 R f
+(Indicator panel, \256le menu popup, print menu popup, panning with rulers, mouse function window,)13 4320 1 1080 3840 t
+( sensitive corner markers,)3 1049(dashed/dotted splines on canvas, update button, constrained copy/move, context)8 3271 2 1080 3960 t
+(smarter redraw, cancel object creation, save of \256gure on crash by:)10 2705 1 1080 4080 t
+(Paul King \(king)2 655 1 1080 4320 t
+10 S1 f
+(@)1735 4320 w
+10 R f
+(cs.uq.oz.au\))1827 4320 w
+(with help from:)2 638 1 1080 4440 t
+(Brian V. Smith \(bvsmith)3 1014 1 1080 4560 t
+10 S1 f
+(@)2094 4560 w
+10 R f
+(lbl.gov\) and Micah Beck \(beck)4 1271 1 2186 4560 t
+10 S1 f
+(@)3457 4560 w
+10 R f
+(cs.cornell.edu\))3549 4560 w
+(Color implementation and pan/zoom with ctrl key/mouse by:)7 2497 1 1080 4800 t
+(Henning Spruth)1 644 1 1080 4920 t
+(Directory Browser based on XDir by:)5 1545 1 1080 5160 t
+(Win Treese, Digital Equipment Corporation)4 1794 1 1080 5280 t
+(Many bug \256xes/cleanups etc. by a host of faithful users)9 2280 1 1080 5520 t
+(See the x\256g CHANGES \256le for all the credits.)8 1915 1 1080 5640 t
+10 B f
+(xcoast 1.0:)1 457 1 1080 5880 t
+10 R f
+(x\256g 2.0 turned into xcoast by:)5 1240 1 1080 6000 t
+(Kate Hedstrom)1 615 1 1080 6120 t
+(and)1080 6240 w
+(Eddie Parker)1 526 1 1080 6360 t
+10 B f
+(xcoast 2.0:)1 457 1 1080 6600 t
+10 R f
+( This)1 267( x\256g 2.1.7 and incorporated some of the GIS described in Lukatela and Russell.)13 3582(Updated to)1 471 3 1080 6720 t
+(includes the coastline \256le, checking for coastline chunks being off screen, and the latitude/longitude grid.)14 4314 1 1080 6840 t
+10 B f
+(xcoast 3.0:)1 457 1 1080 7080 t
+10 R f
+( easier to produce than the version 2 style.)8 1819(I went back to the original style of coastline \256le since it is)12 2501 2 1080 7200 t
+( 11)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7680 t
+cleartomark
+showpage
+restore
+%%EndPage: 11 11
+%%Page: 12 12
+save
+mark
+12 pagesetup
+10 R f
+( \( 1 \))3 164( XCOAST)1 3839(User Commands)1 677 3 720 480 t
+(Also, the version 2 style didn't seem to be a big win with my ascii implimentation of it.)17 3633 1 1080 960 t
+( no longer requires that you use an equatorial cen-)9 2106( It)1 131( made the Mercator projection more general.)6 1853(I also)1 230 4 1080 1200 t
+(tral latitude with zero rotation angle.)5 1499 1 1080 1320 t
+(Kate Hedstrom)1 615 1 1080 1440 t
+(\(kate)1080 1560 w
+10 S1 f
+(@)1279 1560 w
+10 R f
+(ahab.rutgers.edu\))1371 1560 w
+( 12)1 1739( change: Release 3.0, pl0)4 1030( Last)1 1469(SunOS 5.6)1 442 4 720 7680 t
+cleartomark
+showpage
+restore
+%%EndPage: 12 12
+%%Trailer
+done
+%%DocumentFonts: Times-Roman Times-Bold Times-Italic Symbol
+%%Pages: 12

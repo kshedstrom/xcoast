@@ -1,0 +1,45 @@
+! some sample settings you may want to change
+
+XCoast.internalborderwidth:	2
+XCoast.geometry:			+0+0
+XCoast.iconX:			+0
+XCoast.iconY:			-0
+! the following should fix the problem that some have had with
+! their window manager fighting with xfig over the geometry
+XCoast*allowShellResize:		False
+! pick a nice font for the popup edit window for text objects
+XCoast*Text =*font:		-*-times-medium-r-normal--14-*
+
+! Specify a private Compose key database file.  If this resource contains a "/"
+! then the wired-in name of the xfig global directory won't be prefixed to it.
+! An initial "~/" is replaced by the value of "$HOME/".
+!
+!XCoast*ComposeKeyDB:	~/.xfig.Compose-key
+
+! keyboard accelerators
+
+XCoast*quit*accelerators: \
+	Meta<Key>q: quit()\n
+XCoast*delete_all*accelerators: \
+	Meta<Key>d: delete_all()\n
+XCoast*undo*accelerators: \
+	Meta<Key>u: undo()\n
+XCoast*redraw*accelerators: \
+	Meta<Key>r: redraw()\n
+XCoast*file*accelerators: \
+	Meta<Key>s: SaveFile()\n\
+	Meta<Key>l: LoadFile()\n\
+	Meta<Key>f: file()\n
+
+XCoast*xfig_file_menu*accelerators: \
+	Meta<Key>c: cancel()\n\
+	Meta<Key>l: load()\n\
+	Meta<Key>m: merge()\n\
+	Meta<Key>r: rescan()\n\
+	Meta<Key>s: save()\n
+XCoast*proj*accelerators: \
+	Meta<Key>p: mapproj()\n
+XCoast*xfig_set_proj_panel*accelerators: \
+	Meta<Key>c: QuitProj()\n\
+	Meta<Key>s: SetProj()\n
+

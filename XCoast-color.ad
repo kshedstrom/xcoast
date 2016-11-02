@@ -1,0 +1,95 @@
+! Some interesting colors for the different parts of xfig
+! if you are using a COLOR workstation.
+
+#include "XCoast"
+
+#ifdef COLOR
+! Top Ruler
+	Fig*topruler.background:	grey95
+	Fig*topruler.foreground:	black
+! Side Ruler
+	Fig*sideruler.background:	grey95
+	Fig*sideruler.foreground:	black
+! Message panel
+	Fig*file_name.background:	lightskyblue
+	Fig*file_name.foreground:	black
+	Fig*message*background:		white
+	Fig*message*foreground:		black
+! Command (top) panel
+	Fig*commands*background:	grey85
+	Fig*commands*foreground:	black
+! Indicator (lower) panel
+	Fig*ind_panel.background: dodgerblue
+	Fig*ind_panel.foreground: black
+	Fig*ind_panel.button_form.button.background: dodgerblue
+	Fig*ind_panel.button_form.button.foreground: black
+	Fig*ind_panel.button_form.update.foreground: red
+	Fig*ind_panel.button_form.update.background: white
+! Mode (left-hand) panel
+	Fig*mode_panel.background: lightskyblue
+	Fig*mode_panel.foreground: black
+	Fig*mode_panel.button.background: lightskyblue
+	Fig*mode_panel.button.foreground: black
+! Mouse indicator panel
+	Fig*mouse_panel.background: yellow
+	Fig*mouse_panel.foreground: black
+! File popup
+	Fig*file_panel*background:		orchid
+	Fig*file_panel*Text*background:		white
+	Fig*file_panel*Text*foreground:		black
+	Fig*file_panel*List*background:		white
+	Fig*file_panel*List*foreground:		black
+	Fig*file_panel*Scrollbar*background:	cornflowerblue
+	Fig*file_panel*Scrollbar*foreground:	red
+	Fig*file_panel*home.foreground:		black
+	Fig*file_panel*home.background:		cornflowerblue
+	Fig*file_panel.rescan.foreground:	black
+	Fig*file_panel.rescan.background:	cornflowerblue
+	Fig*file_panel.cancel.foreground:	black
+	Fig*file_panel.cancel.background:	red
+	Fig*file_panel.save.foreground:		black
+	Fig*file_panel.save.background:		yellow
+	Fig*file_panel.load.foreground:		black
+	Fig*file_panel.load.background:		green
+	Fig*file_panel.merge.foreground:	black
+	Fig*file_panel.merge.background:	cornflowerblue
+! Projection popup
+	Fig*export_panel*background:		orchid
+	Fig*export_panel*Text*background:	white
+	Fig*export_panel*Text*foreground:	black
+	Fig*export_panel*List*background:	white
+	Fig*export_panel*List*foreground:	black
+	Fig*export_panel*Scrollbar*background:	cornflowerblue
+	Fig*export_panel*Scrollbar*foreground:	red
+	Fig*export_panel*MenuButton*background:	white
+	Fig*export_panel*MenuButton*foreground:	black
+	Fig*export_panel*landscape.menu.background: yellow
+	Fig*export_panel*landscape.menu.foreground: black
+	Fig*export_panel*home.foreground:	black
+	Fig*export_panel*home.background:	cornflowerblue
+	Fig*export_panel.rescan.foreground:	black
+	Fig*export_panel.rescan.background:	cornflowerblue
+	Fig*export_panel.cancel.foreground:	black
+	Fig*export_panel.cancel.background:	red
+	Fig*export_panel.export.foreground:	black
+	Fig*export_panel.export.background:	green
+! File message popup
+	Fig*file_msg_panel.background:		orchid
+	Fig*file_msg_panel.file_msg_win*background: cornflowerblue
+	Fig*file_msg_panel.file_msg_win*foreground: yellow
+	Fig*file_msg_panel.dismiss.background:	green
+	Fig*file_msg_panel.dismiss.foreground:	black
+	Fig*file_msg_panel.clear.background:	red
+	Fig*file_msg_panel.clear.foreground:	black
+! Query popup
+	Fig*query_popup.query_form.background: lightslateblue
+	Fig*query_popup.query_form.foreground: black
+	Fig*query_popup.query_form.message.background: lightgrey
+	Fig*query_popup.query_form.message.foreground: black
+	Fig*query_popup.query_form.yes.background: red
+	Fig*query_popup.query_form.yes.foreground: black
+	Fig*query_popup.query_form.no.background: orange
+	Fig*query_popup.query_form.no.foreground: black
+	Fig*query_popup.query_form.cancel.background: green
+	Fig*query_popup.query_form.cancel.foreground: black
+#endif

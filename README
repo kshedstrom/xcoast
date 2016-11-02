@@ -1,0 +1,59 @@
+          This is xcoast 3.0, with some changes from xfig 3.x,
+	  but still mostly derived from xfig 2.1.7a.
+
+
+THINGS TO BEWARE OF:
+
+1.  It requires ANSI C because there are function prototypes.
+
+2.  It requires X11R4 or better and the Athena widgets.
+
+3.  It takes coastline files in the format produced by the
+    extract_coast Matlab program from the GSHHS database from GMT. The
+    world_int.cst file is provided as an example.  It will still use
+    the XCOASTDATA environment variable to find the coastline file,
+    so make sure you update it.
+
+4.  Files created with xcoast 2.0 can be read in with this
+    version and will be converted to a version 3 format.
+
+INSTALLATION
+
+1.  Get world_int.cst file and put it somewhere.
+
+2.  Set the environment variable in .cshrc (or whatever):
+
+      setenv XCOASTDATA /mycoastlinedirectory/world_int.cst
+
+3.  Unpack the xcoast sources.
+
+4.  Build the Makefile and compile:
+
+      xmkmf
+      make depend
+      make
+
+    This is known to work on both Sun Solaris and FreeBSD with gcc and
+    X11R6.  There is a Makefile.gcc which assumes that your X files are
+    under /usr/local/X11R6.  Nothing else is guaranteed, but it should
+    work for all computers which have an ANSI C compiler and can
+    compile xfig.
+
+5.  Become root and install:
+
+      make install
+      make install.man
+
+    Otherwise, just copy the xcoast executable to some binary directory
+    on your path.
+
+6.  If you do not know xfig, it will help to read the manual:
+
+      man xcoast
+
+    or
+
+      tbl xcoast.man | ptroff -man
+
+Kate Hedstrom
+kshedstrom@alaska.edu

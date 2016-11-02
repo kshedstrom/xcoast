@@ -1,0 +1,59 @@
+#ifdef InstallManPage
+#undef InstallManPage
+#endif
+#define InstallManPage(file,dest)                                       @@\
+InstallManPageLong(file,dest,file)
+
+# Uncomment the following if needed for DECstations running older X11R4 
+#INCROOT=/usr/include/mit
+
+SYS_LIBRARIES= 		-lm
+DEPLIBS = 		XawClientDepLibs
+# use the following if NOT using DPS
+LOCAL_LIBRARIES = 	XawClientLibs
+# use the following if using DPS, *** and add -DDPS to the DEFINES line ***
+#LOCAL_LIBRARIES = 	-ldps XawClientLibs
+# use (and change) the following if you want the multi-key data base file
+#if (defined(VaxArchitecture) && !defined(UltrixArchitecture)) || \
+    (defined(RtArchitecture) && !defined(AIXArchitecture)) || \
+    defined(titan) || \
+    (defined(SunOSPlatform) && (OSMinorVersion==0))
+STRSTRDEFINES = -DNOSTRSTR
+#endif
+DEFINES =             $(STRSTRDEFINES)
+
+XFIGSRC =	d_coast.c d_grid.c d_intspline.c d_line.c e_addpt.c \
+		e_convert.c e_delete.c e_deletept.c e_edit.c \
+		e_movept.c e_update.c f_load.c f_read.c \
+		f_save.c f_util.c main.c mode.c object.c \
+		resources.c u_bound.c u_coords.c u_create.c \
+		u_draw.c u_elastic.c u_error.c u_free.c u_geom.c \
+		u_list.c u_mapdraw.c u_mapping.c u_markers.c \
+		u_pan.c u_redraw.c u_search.c u_undo.c w_canvas.c \
+		w_cmdpanel.c w_cursor.c w_dir.c w_drawprim.c \
+		w_file.c w_grid.c w_icons.c w_indpanel.c \
+		w_modepanel.c w_mousefun.c w_msgpanel.c \
+		w_proj.c w_rulers.c w_setup.c w_util.c w_zoom.c
+
+XFIGOBJ =	d_coast.o d_grid.o d_intspline.o d_line.o e_addpt.o \
+		e_convert.o e_delete.o e_deletept.o e_edit.o \
+		e_movept.o e_update.o f_load.o f_read.o \
+		f_save.o f_util.o main.o mode.o object.o \
+		resources.o u_bound.o u_coords.o u_create.o \
+		u_draw.o u_elastic.o u_error.o u_free.o u_geom.o \
+		u_list.o u_mapdraw.o u_mapping.o u_markers.o \
+		u_pan.o u_redraw.o u_search.o u_undo.o w_canvas.o \
+		w_cmdpanel.o w_cursor.o w_dir.o w_drawprim.o \
+		w_file.o w_grid.o w_icons.o w_indpanel.o \
+		w_modepanel.o w_mousefun.o w_msgpanel.o \
+		w_proj.o w_rulers.o w_setup.o w_util.o w_zoom.o
+
+SRCS = $(XFIGSRC)
+OBJS = $(XFIGOBJ)
+
+ComplexProgramTarget(xcoast)
+InstallAppDefaults(XCoast)
+InstallAppDefaults(XCoast-color)
+
+tarfile:
+	tar cvf xcoast.tar *.c *.h Imakefile *.ad *.man *.X M* README *.ps
