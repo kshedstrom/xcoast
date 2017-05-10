@@ -33,11 +33,12 @@ INSTALLATION
       make depend
       make
 
-    This is known to work on both Sun Solaris and FreeBSD with gcc and
-    X11R6.  There is a Makefile.gcc which assumes that your X files are
-    under /usr/local/X11R6.  Nothing else is guaranteed, but it should
-    work for all computers which have an ANSI C compiler and can
-    compile xfig.
+    For Ubuntu, I had to install a bunch of packages:
+
+    sudo apt-get install xutils-dev
+    sudo apt-get install libx11-dev
+    sudo apt-get install libxt-dev
+    sudo apt-get install libxaw7-dev
 
 5.  Become root and install:
 
